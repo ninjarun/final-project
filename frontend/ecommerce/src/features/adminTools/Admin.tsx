@@ -15,13 +15,13 @@ const Admin = () => {
     const [desc, setdesc] = useState("second")
     const [img, setimg] = useState(null)
 
-    const handleImg = (event:any) => {
+    const handleImg = (event: any) => {
         setimg(event.target.files[0])
     }
 
-    const sendProduct = () =>{
+    const sendProduct = () => {
         console.log('first')
-       dispatch( addProdAsync({name,price,desc,img}))
+        dispatch(addProdAsync({ name, price, "description":desc, "image":img  }))
     }
 
     useEffect(() => {
@@ -33,7 +33,8 @@ const Admin = () => {
 
 
     return (
-        <div> Admin
+        <div> 
+            Admin
             <br />
             add products:
             <br />
@@ -41,7 +42,7 @@ const Admin = () => {
             product price: <input type="number" onChange={(e) => setprice(e.target.valueAsNumber)} /><br />
             product description: <input onChange={(e) => setdesc(e.target.value)} /><br />
             image: <input type="file" accept="image/png,image/jpeg" onChange={handleImg} />
-<button onClick={sendProduct}>upload</button>
+            <button onClick={sendProduct}>upload</button>
 
 
 

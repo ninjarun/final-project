@@ -3,17 +3,38 @@ from django.http import HttpResponse, JsonResponse
 
 from .models import Product
 from django.contrib.auth.models import User
-
+from django.contrib.auth import logout
 from .Serializer import ProductSerializer
 
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer,TokenRefreshSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FormParser
-from rest_framework import status
+from rest_framework import status, generics
+
+
+#AUTHENTICATION
+    #logout
+
+class LogoutAPIView(APIView):
+    def post(self, request):
+        refresh_token = RefreshToken(request.data.get('refresh'))
+        refresh_token.blacklist()
+        return Response({'message': 'Logout successful'}, status=status.HTTP_200_OK)
+
+
+    #refresh token
+class RefreshTokenView(generics.GenericAPIView):
+    serializer_class = TokenRefreshSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.validated_data, status=status.HTTP_200_OK)
 
 
     #login
@@ -42,19 +63,12 @@ def  register(req):
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
-#test
-def index(req):
-    return JsonResponse('hello', safe=False)
 
-#without serialize - gets all products but return the str method from models.py file
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def products(req):
-    return HttpResponse (Product.objects.all())
+
 
 #with serializer - gets all products
 @api_view(['GET','POST','DELETE','PUT','PATCH'])
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def myProducts(req):
     if req.method== 'GET':
         all_products = ProductSerializer(Product.objects.all(), many=True).data
@@ -99,3 +113,4 @@ class APIViews(APIView):
 
 
 # //////////// end      image upload / display
+

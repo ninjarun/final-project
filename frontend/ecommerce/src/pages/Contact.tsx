@@ -1,4 +1,5 @@
 import React from 'react'
+import { SERVER } from '../globalVar'
 
 const Contact = () => {
   return (

@@ -1,24 +1,21 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState, AppThunk } from '../../app/store';
 import {prodFetch  } from './productAPI';
+import Product from "../../models/Product"
 
-export interface ProductSlice {
-logged:boolean
-userLogged:string
-isAdmin:boolean
 
-}
+const initialState: Product = {
+    name:"",
+    description:"",
+    price:0,
+    image:""
 
-const initialState: ProductSlice = {
-logged:false,
-userLogged:"",
-isAdmin:false
 };
 
 export const addProdAsync = createAsyncThunk(
   'product/userFetch',
   async (creds:any) => {
-    console.log(creds)
+    console.log(creds.image.name)
     const response = await prodFetch(creds);
     return response.data;
   }
@@ -34,6 +31,7 @@ export const productSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(addProdAsync.fulfilled, (state, action) => {
+        console.log(action.payload)
          })
   },
 });
