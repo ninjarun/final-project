@@ -1,0 +1,35 @@
+.main {
+    display: flex;
+    background-color: #d0fff3;
+    padding: 5px;
+    margin: 1px;
+    position: relative;
+}
+
+.icon {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+}
+
+.img_container{
+
+}
+
+
+.details_container {
+    padding: 5px;
+    margin: auto;
+}
+
+.add2cart_btn {
+    background-color: #00553f;
+    padding: 3px;
+    margin: 3px;
+    color: white;
+    border-radius: 25px;
+    font-weight: bolder;
+    text-align: center;
+    cursor: pointer;
+}

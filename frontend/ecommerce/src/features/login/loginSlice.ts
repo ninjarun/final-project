@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState, AppThunk } from '../../app/store';
-import { refreshUser, userFetch } from './loginAPI';
+import { refreshUser, userFetch, userRegister } from './loginAPI';
 import jwt_decode from "jwt-decode"
 
 export interface LoginSlice {
@@ -24,11 +24,29 @@ export const loginAsync = createAsyncThunk(
   }
 );
 
+export const registerAsync = createAsyncThunk(
+  'register/regUser',
+  async (creds: any) => {
+    const response = await userRegister(creds);
+    return response.data;
+  }
+);
+
 export const refreshAsync = createAsyncThunk(
   'refresh/irefresh',
   async (refresh: any) => {
     console.log("here!",refresh)
     const response = await refreshUser(refresh);
+    return response.data;
+  }
+);
+
+
+export const logoutAsync = createAsyncThunk(
+  'logout/logout',
+  async (token: any) => {
+    console.log("here!")
+    const response = await refreshUser(token);
     return response.data;
   }
 );
@@ -48,12 +66,27 @@ export const loginSlice = createSlice({
         state.userLogged = tmp.username
         { tmp.username == "admin" ? state.isAdmin = true : state.isAdmin = false }
       })
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      .addCase(registerAsync.fulfilled, (state, action) => {
+        // localStorage.setItem('refresh', action.payload.refresh)
+        // const tmp: any = jwt_decode(action.payload.access)
+        // state.userLogged = tmp.username
+        // { tmp.username == "admin" ? state.isAdmin = true : state.isAdmin = false }
+        console.log(action.payload)
+      })
 
       .addCase(refreshAsync.fulfilled, (state, action) => {
         console.log(action.payload)
         localStorage.setItem('refresh',action.payload.refresh)
         const tmp: any = jwt_decode(action.payload.access)
         state.userLogged = tmp.username
+        { tmp.username == "admin" ? state.isAdmin = true : state.isAdmin = false }
+      })
+
+      .addCase(logoutAsync.fulfilled, (state, action) => {
+        console.log(action.payload)
+        const tmp: any = jwt_decode(action.payload.access)
+        state.userLogged = ""
         { tmp.username == "admin" ? state.isAdmin = true : state.isAdmin = false }
       })
   },

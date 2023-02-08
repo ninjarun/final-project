@@ -9,6 +9,8 @@ import Login from "./features/login/Login";
 import Cart from './features/cart/Cart';
 import WishList from './features/wishList/WishList';
 import Admin from './features/adminTools/Admin';
+import Logout from './features/login/Logout';
+import "./index.css"
 
 export default function App() {
   return (
@@ -20,7 +22,9 @@ export default function App() {
             <Route index element={<Home />} />
               <Route path="wishlist" element={<WishList />} />
               <Route path="login" element={<Login />} />
+              <Route path="logout" element={<Logout />} />
               <Route path="cart" element={<Cart />} />
+
             </Route>
         </Routes>
       </BrowserRouter>

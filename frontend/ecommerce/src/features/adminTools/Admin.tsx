@@ -5,6 +5,8 @@ import { useAppDispatch } from '../../app/hooks'
 import { selectUser } from '../login/loginSlice'
 import { addProdAsync } from './productSlice'
 
+// component for adding products
+// TODO - add more features so admin can control site
 const Admin = () => {
     const currentUser: string = useSelector(selectUser)
     const navigate = useNavigate()
@@ -24,18 +26,18 @@ const Admin = () => {
         dispatch(addProdAsync({ name, price, "description":desc, "image":img  }))
     }
 
-    useEffect(() => {
-        if (currentUser != "admin") {
-            navigate("/")
-        }
-    }, [])
+    // useEffect(() => {
+    //     if (currentUser != "admin") {
+    //         navigate("/")
+    //     }
+    // }, [])
 
 
 
     return (
         <div> 
-            Admin
-            <br />
+            Admin - store managment
+            <hr />
             add products:
             <br />
             product name:<input onChange={(e) => setname(e.target.value)} /><br />

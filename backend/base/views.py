@@ -56,7 +56,7 @@ def  register(req):
     # create a new user (encrypt password)
     try:
         User.objects.create_user(username=username,password=password)
-    except:
+    except Exception as e:
         return Response("error")    
     return Response(f"{username} registered")
 
@@ -68,7 +68,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
 
 #with serializer - gets all products
 @api_view(['GET','POST','DELETE','PUT','PATCH'])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def myProducts(req):
     if req.method== 'GET':
         all_products = ProductSerializer(Product.objects.all(), many=True).data
