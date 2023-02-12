@@ -3,7 +3,7 @@ from django.http import HttpResponse, JsonResponse
 
 from .models import Product
 from django.contrib.auth.models import User
-from django.contrib.auth import logout
+from django.contrib.auth import logout,authenticate
 from .Serializer import ProductSerializer
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer,TokenRefreshSerializer
@@ -16,6 +16,8 @@ from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework import status, generics
 
+
+from rest_framework.exceptions import AuthenticationFailed
 
 #AUTHENTICATION
     #logout
@@ -37,17 +39,34 @@ class RefreshTokenView(generics.GenericAPIView):
         return Response(serializer.validated_data, status=status.HTTP_200_OK)
 
 
-    #login
+# class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+#     @classmethod
+#     def get_token(cls, user):
+#         try:
+#             token = super().get_token(user)
+#             # Add custom claims
+#             token['username'] = user.username
+#             token['junk']="bling bling"
+#             # ...
+#             return token
+#         except jwt.ExpiredSignatureError as e:
+#             raise exceptions.AuthenticationFailed('Token has expired') from e
+#         except jwt.DecodeError as e:
+#             raise exceptions.AuthenticationFailed('Error decoding signature') from e
+#         except exceptions.AuthenticationFailed as e:
+#             raise exceptions.AuthenticationFailed('Incorrect password') from e
+#     #login
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
-        token = super().get_token(user)
-        # Add custom claims
-        token['username'] = user.username
-        token['junk']="bling bling"
-        # ...
-        return token
-    
+
+            token = super().get_token(user)
+            # Add custom claims
+            token['username'] = user.username
+            token['junk']="bling bling"
+            # ...
+            return  token
+
     # register
 @api_view(['POST'])
 def  register(req):
@@ -57,7 +76,7 @@ def  register(req):
     try:
         User.objects.create_user(username=username,password=password)
     except Exception as e:
-        return Response("error")    
+        return Response(repr(e))    
     return Response(f"{username} registered")
 
 class MyTokenObtainPairView(TokenObtainPairView):

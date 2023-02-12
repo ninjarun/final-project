@@ -7,20 +7,19 @@ import "./card.css"
 const Card = (props: any) => {
     const dispatch = useAppDispatch()
 
-    const handleAddToCart = (prod: Product) => {
-        dispatch(addToCart(prod))
-      }
     return (
         <div className='main'>
             <div className='img_container'>
                 <img src={`${SERVER}static${props.img}`} alt="Bootstrap" width="120px" height="120" />
-                <div onClick={()=>dispatch(addToCart(props.prod))} className='add2cart_btn '>+Add</div>
+                <div onClick={() => dispatch(addToCart(props.prod))} className='add2cart_btn '>+Add</div>
             </div>
 
             <div className='details_container'>
-                {props.price}<br />
+                <strong>
+                    {props.price}<br />
                 {props.name}<br />
-               {props.desc}<br />
+                {props.desc}<br />
+                </strong>
 
             </div>
             <div className='icon'>

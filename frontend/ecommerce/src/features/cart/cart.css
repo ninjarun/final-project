@@ -1,0 +1,15 @@
+.product_field{
+padding: 30px;
+background-color: blueviolet;
+margin: 5px;
+}
+
+.items_list{
+    width: 59%;
+    margin: 5px;
+}
+
+.order_summary{
+    width: 39%;
+    background-color: aqua;
+}

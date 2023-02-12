@@ -8,8 +8,8 @@ const initialState: Product = {
     name:"",
     description:"",
     price:0,
-    image:""
-
+    image:"",
+    amount:1
 };
 
 export const addProdAsync = createAsyncThunk(
@@ -37,6 +37,5 @@ export const productSlice = createSlice({
 });
 
 export const {  } = productSlice.actions;
-export const selectUser = (state: RootState) => state.login.userLogged;
 
 export default productSlice.reducer;

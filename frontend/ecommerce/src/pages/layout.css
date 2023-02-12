@@ -1,41 +1,56 @@
-.navigator{
-display: flex;
-justify-content: space-around;
-background-color: #57A773;
-padding:5px;
+.navigator {
+    display: flex;
+    justify-content: space-around;
+    background-color: #0071dc;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
-.navBarLink{
-    color:white;
+.navBarLink {
+    color: white;
     text-decoration: none;
-    padding: 5px;
-
-}
-.navBarLink:hover{
-    background-color: #1C3525;
-    border-radius: 10%;
-
+padding: 10px;
 }
 
+.navBarLink:hover {
+    background-color: #4cadfe;
+    border-radius: 13px;
+    border-color: #619b91;
+    /* border-style: solid; */
+}
 
-.dropDownBtn{
-    padding: 5px;
+
+.dropDownBtn {
     position: relative;
     display: inline-block;
 }
 
-.dropContent{
-    display:none;
-    border: solid;
-    background-color: #57A773;
+
+.dropDownBtn:hover .dropContent {
+    display: block;
+    padding: 40px;
+}
+
+.dropContent {
+    display: none;
+    background-color: #031f42;
     position: absolute;
     text-align: center;
-    padding: 5px;
-    margin:auto;
-    z-index: 5;
+    padding: 25px;
+    margin: auto;
+    margin-top: 10px;
+    z-index: 1;
 
 }
 
-.dropDownBtn:hover .dropContent{
-display: block;
+.mainLogo {
+    font-weight: bolder;
+    font-size: larger;
+    text-decoration: underline;
 }
+
+.searchBar {
+    border-radius: 10px;
+
+}
+

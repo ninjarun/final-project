@@ -2,10 +2,12 @@ import axios from "axios";
 import {SERVER} from "../../globalVar"
 
 export function userFetch(creds:any) {
-    return new Promise<{ data: any }>((resolve) =>
+    return new Promise<{ data: any }>((resolve,reject) =>
       axios
         .post(SERVER+ "login", { username:creds.username, password:creds.password })
-        .then((res) => resolve({ data: res.data }))
+        .then((res) => resolve({ data: res.data }))      
+        .catch((error)=>reject(error.data))
+
     );
   }
 
@@ -15,6 +17,7 @@ export function userRegister(creds:any) {
     axios
       .post(SERVER+ "register", { username:creds.username, password:creds.password })
       .then((res) => resolve({ data: res.data }))
+      .catch((error)=>console.log(error))
   );
 }
   

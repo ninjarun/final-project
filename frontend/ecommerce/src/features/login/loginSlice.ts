@@ -20,7 +20,9 @@ export const loginAsync = createAsyncThunk(
   'login/userFetch',
   async (creds: any) => {
     const response = await userFetch(creds);
+    console.log('here',response.data)
     return response.data;
+
   }
 );
 
@@ -61,10 +63,17 @@ export const loginSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(loginAsync.fulfilled, (state, action) => {
+        console.log("newnewnew",action)
         localStorage.setItem('refresh', action.payload.refresh)
         const tmp: any = jwt_decode(action.payload.access)
         state.userLogged = tmp.username
         { tmp.username == "admin" ? state.isAdmin = true : state.isAdmin = false }
+      })
+      .addCase(loginAsync.rejected, (state, action) => {
+        console.log('falied failed failded')
+        console.log(action)
+
+
       })
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
       .addCase(registerAsync.fulfilled, (state, action) => {

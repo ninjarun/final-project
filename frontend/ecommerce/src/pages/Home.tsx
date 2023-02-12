@@ -25,7 +25,7 @@ const Home = () => {
     <div style={{justifyContent:'center', display: "flex", flexWrap: 'wrap' }}>
       {prods.map((p: Product, i) => (
         <div style={{ flex: "0 0 33%",minWidth:"300px", maxWidth:"350px" }} key={i}>
-          <Card prod={p} name={p.name} img={p.image} price={p.price} desc={p.description}></Card>
+          <Card prod={p} name={p.name} img={p.image} price={p.price} desc={p.description} ></Card>
         </div>
       ))}
 
