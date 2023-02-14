@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 
-from .models import Product
+from .models import Product,OrderItem,Orders
 from django.contrib.auth.models import User
 from django.contrib.auth import logout,authenticate
-from .Serializer import ProductSerializer
+from .Serializer import ProductSerializer, OrderItemSerializer,OrderSerializer
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer,TokenRefreshSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -63,7 +63,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
             token = super().get_token(user)
             # Add custom claims
             token['username'] = user.username
-            token['junk']="bling bling"
+            token['junk']="junk"
             # ...
             return  token
 
@@ -132,4 +132,19 @@ class APIViews(APIView):
 
 
 # //////////// end      image upload / display
+
+
+#order view
+@api_view(['POST'])
+def order(req):
+    print(req.data)
+    # for i in req.data['cart']:
+    #     print(i)
+        # for k,v in i.items():
+            # print(k,v)
+    
+    
+    # Orders.objects.create(user =req.data["userID"])
+    return Response ("post...")
+
 

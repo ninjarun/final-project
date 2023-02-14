@@ -17,9 +17,6 @@ const Home = () => {
   }, []);
 
 
-  const handleAddToCart = (prod: Product) => {
-    dispatch(addToCart(prod))
-  }
 
   return (
     <div style={{justifyContent:'center', display: "flex", flexWrap: 'wrap' }}>

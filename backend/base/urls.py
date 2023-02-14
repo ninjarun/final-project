@@ -13,5 +13,7 @@ urlpatterns = [
     path('logout', views.LogoutAPIView.as_view(), name='logout'),
     path('get_all_images', views.getImages),
     path('upload_image/',views.APIViews.as_view()),
+    path('order',views.order ),
+
 
 ]

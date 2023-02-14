@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState, AppThunk } from '../../app/store';
-import { } from './cartAPI';
+import { sendOrder } from './cartAPI';
 import { Cart } from "../../models/Cart"
 import Product from '../../models/Product';
 
@@ -8,6 +8,7 @@ const initialState: Cart = {
   products: []
 };
 
+// delete unNeeded
 export const addProdAsync = createAsyncThunk(
   'product/userFetch',
   async (creds: any) => {
@@ -17,6 +18,15 @@ export const addProdAsync = createAsyncThunk(
   }
 );
 
+// #####################################################################################################
+export const orderAsync = createAsyncThunk(
+  'order/orderSend',
+  async (creds: any) => {
+    console.log(creds)
+    const response = await sendOrder(creds);
+    return response.data;
+  }
+);
 export const cartSlice = createSlice({
   name: 'cart',
   initialState,
@@ -44,9 +54,7 @@ export const cartSlice = createSlice({
     change_amount: (state, action) => {
       const tmpAr = state.products.filter(x => x.id === action.payload.id)
       {
-        action.payload.amount === 1 ?
-        tmpAr[0].amount += 1 :
-        tmpAr[0].amount += -1
+        action.payload.amount === 1 ? tmpAr[0].amount += 1 : tmpAr[0].amount += -1
       }
       
       if (tmpAr[0].amount === 0){ 

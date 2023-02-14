@@ -1,5 +1,7 @@
 import axios from "axios";
 import { SERVER } from "../../globalVar";
+
+
 export function prodFetch(creds:any) {
     console.log(creds);
     return new Promise<{ data: any }>((resolve) =>
@@ -10,3 +12,12 @@ export function prodFetch(creds:any) {
     );
   }
   
+
+export function sendOrder(creds:any) {
+  console.log(creds);
+  return new Promise<{ data: any }>((resolve) =>
+    axios
+      .post(SERVER + "order", creds)
+      .then((res) => resolve({ data: res.data }))
+  );
+}

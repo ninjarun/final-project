@@ -7,13 +7,15 @@ export interface LoginSlice {
   logged: boolean
   userLogged: string
   isAdmin: boolean
-
+  userID:string
 }
 
 const initialState: LoginSlice = {
   logged: false,
   userLogged: "",
-  isAdmin: false
+  isAdmin: false,
+  userID:""
+
 };
 
 export const loginAsync = createAsyncThunk(
@@ -67,6 +69,8 @@ export const loginSlice = createSlice({
         localStorage.setItem('refresh', action.payload.refresh)
         const tmp: any = jwt_decode(action.payload.access)
         state.userLogged = tmp.username
+        console.log('hihihiih',tmp.user_id)
+        state.userID=tmp.user_id
         { tmp.username == "admin" ? state.isAdmin = true : state.isAdmin = false }
       })
       .addCase(loginAsync.rejected, (state, action) => {
@@ -89,6 +93,8 @@ export const loginSlice = createSlice({
         localStorage.setItem('refresh',action.payload.refresh)
         const tmp: any = jwt_decode(action.payload.access)
         state.userLogged = tmp.username
+        state.userID=tmp.user_id
+
         { tmp.username == "admin" ? state.isAdmin = true : state.isAdmin = false }
       })
 
@@ -103,5 +109,6 @@ export const loginSlice = createSlice({
 
 export const { } = loginSlice.actions;
 export const selectUser = (state: RootState) => state.login.userLogged;
+export const selectUserID = (state: RootState) => state.login.userID;
 
 export default loginSlice.reducer;
