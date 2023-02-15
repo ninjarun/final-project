@@ -50,7 +50,7 @@ const Cart = () => {
       <div className='order_summary'>
         <h3>Summary</h3>
         <h5>Total {total}$</h5>
-        <div onClick={()=>dispatch(orderAsync({cart,userID}))}>send order</div>
+        <div onClick={()=>dispatch(orderAsync(cart))}>send order</div>
       </div>
 
     </div>

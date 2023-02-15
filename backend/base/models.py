@@ -17,7 +17,7 @@ class Orders(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
-        return self.name
+        return self.user.username
     
 
 class OrderItem(models.Model):

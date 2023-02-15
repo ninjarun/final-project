@@ -136,15 +136,38 @@ class APIViews(APIView):
 
 #order view
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def order(req):
-    print(req.data)
-    # for i in req.data['cart']:
-    #     print(i)
-        # for k,v in i.items():
-            # print(k,v)
     
+#order
+    serializer=OrderSerializer(data={},context={'user': req.user})
+    if serializer.is_valid():
+            serializer.save()
+    else:
+        print('**************ORDER*******************')
+        print('error',serializer.errors)
+        print('***************ORDER******************')
+
+
+    order_id = Orders.objects.latest('id').id
+    print(order_id)
+# items
+    for i in req.data:
+        product = i['id']
+        order=order_id
+        name=i['name']
+        qty=i['amount']
+        price=i['price']
+        image=i['image']
+        item={'product':product,'order':order,'name':name,'qty':qty,'price':price,'image':image}
+        serializer=OrderItemSerializer(data=item)
+        if serializer.is_valid():
+            serializer.save()
+        else:
+            print('**************ORDER-ITEM*******************')
+            print('error',serializer.errors)
+            print('***************ORDER-ITEM******************')
     
-    # Orders.objects.create(user =req.data["userID"])
-    return Response ("post...")
+    return HttpResponse (serializer.errors)
 
 

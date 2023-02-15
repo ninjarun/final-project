@@ -91,6 +91,7 @@ export const loginSlice = createSlice({
       .addCase(refreshAsync.fulfilled, (state, action) => {
         console.log(action.payload)
         localStorage.setItem('refresh',action.payload.refresh)
+        localStorage.setItem('axx',action.payload.access)
         const tmp: any = jwt_decode(action.payload.access)
         state.userLogged = tmp.username
         state.userID=tmp.user_id
