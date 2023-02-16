@@ -10,8 +10,8 @@ const Card = (props: any) => {
     return (
         <div className='main'>
             <div className='img_container'>
-                <img src={`${SERVER}static${props.img}`} alt="Bootstrap" width="120px" height="120" />
-                <div onClick={() => dispatch(addToCart(props.prod))} className='add2cart_btn '>+Add</div>
+                <img src={`${SERVER}static${props.img}`} alt="Bootstrap" width="120px" height="120px" />
+                <div onClick={() => dispatch(addToCart(props.prod))} className='add2cart_btn '>+ Add</div>
             </div>
 
             <div className='details_container'>

@@ -11,7 +11,7 @@ import WishList from './features/wishList/WishList';
 import Admin from './features/adminTools/Admin';
 import Logout from './features/login/Logout';
 import "./index.css"
-
+import MyOrders from './features/MyOrders/MyOrders';
 export default function App() {
   return (
     <Provider store={store}>
@@ -24,6 +24,7 @@ export default function App() {
               <Route path="login" element={<Login />} />
               <Route path="logout" element={<Logout />} />
               <Route path="cart" element={<Cart />} />
+              <Route path="myorders" element={<MyOrders />} />
 
             </Route>
         </Routes>
