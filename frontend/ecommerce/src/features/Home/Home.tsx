@@ -1,19 +1,20 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react'
-import { useAppDispatch } from '../app/hooks';
-import { addToCart } from '../features/cart/cartSlice';
-import Card from '../features/ProdCard/Card';
-import { SERVER } from '../globalVar';
-import Product from '../models/Product';
+import { useSelector } from 'react-redux';
+import { useAppDispatch } from '../../app/hooks';
+import { addToCart } from '../cart/cartSlice';
+import Card from '../ProdCard/Card';
+import { SERVER } from '../../globalVar';
+import Product from '../../models/Product';
+import { getAllProductsAsync, selectProducts } from './manyProductsSlice';
 
 const Home = () => {
-  const [prods, setProds] = useState([]);
   const dispatch = useAppDispatch()
+  const prods = useSelector(selectProducts)
 
-
-  // // gets all products on start needs to be moved to product reducer
+// // gets all products on start needs to be moved to product reducer
   useEffect(() => {
-    axios.get(SERVER + "myProducts").then((res) => setProds(res.data));
+dispatch (getAllProductsAsync())
   }, []);
 
 

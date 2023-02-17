@@ -8,7 +8,7 @@ class Product(models.Model):
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     image = models.ImageField(null=True,blank=True,default='/placeholder.png')
-
+    category = models.TextField(default="")
     def __str__(self):
         return self.name
 

@@ -4,7 +4,7 @@ import { store } from './app/store';
 import ReactDOM, { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./pages/Layout";
-import Home from "./pages/Home";
+import Home from "./features/Home/Home";
 import Login from "./features/login/Login";
 import Cart from './features/cart/Cart';
 import WishList from './features/wishList/WishList';
@@ -12,6 +12,7 @@ import Admin from './features/adminTools/Admin';
 import Logout from './features/login/Logout';
 import "./index.css"
 import MyOrders from './features/MyOrders/MyOrders';
+import Departments from './features/Home/Departments';
 export default function App() {
   return (
     <Provider store={store}>
@@ -25,7 +26,7 @@ export default function App() {
               <Route path="logout" element={<Logout />} />
               <Route path="cart" element={<Cart />} />
               <Route path="myorders" element={<MyOrders />} />
-
+              <Route path="departments" element={<Departments />} />
             </Route>
         </Routes>
       </BrowserRouter>

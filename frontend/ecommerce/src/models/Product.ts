@@ -6,6 +6,6 @@ export default interface Product {
     price:number
     image:string
     amount:number
-    
+    category:""
     }
     
