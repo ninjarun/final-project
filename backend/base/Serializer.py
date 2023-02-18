@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Product,OrderItem,Orders
+from .models import CustomUser, Product,OrderItem,Orders
 
 
 
@@ -40,3 +40,30 @@ class OrderSerializer(serializers.ModelSerializer):
         serializer = OrderItemSerializer(items, many=True)
         return serializer.data
 
+
+
+# profile
+class CustomUserSerializer(serializers.ModelSerializer): 
+    name = serializers.SerializerMethodField(read_only=True)
+    id = serializers.SerializerMethodField(read_only=True)
+    admin = serializers.SerializerMethodField(read_only=True)
+    class Meta: 
+        model = CustomUser
+        fields = '__all__'
+        extra_kwargs = {'password': {'write_only': True}}
+
+    def get_name(self, object):
+        name = object.first_name
+        if name == '':
+            name = object.email
+        return name
+
+    def get_id(self, object):
+        return object.id
+
+    def get_admin(self, object):
+        return object.is_staff
+  
+    def create(self, validated_data): 
+        user = self.context['user']
+        return CustomUser.objects.create(**validated_data, user = user)

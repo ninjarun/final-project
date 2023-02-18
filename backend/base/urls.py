@@ -14,6 +14,8 @@ urlpatterns = [
     path('get_all_images', views.getImages),
     path('upload_image/',views.APIViews.as_view()),
     path('order',views.order ),
+    path('get_profile',views.get_user_profile ),
+    path('upd_profile',views.update_user_profile ),
 
 
 ]

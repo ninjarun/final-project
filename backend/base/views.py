@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 
-from .models import Product,OrderItem,Orders
+from .models import CustomUser, Product,OrderItem,Orders
 from django.contrib.auth.models import User
 from django.contrib.auth import logout,authenticate
-from .Serializer import ProductSerializer, OrderItemSerializer,OrderSerializer
+from .Serializer import CustomUserSerializer, ProductSerializer, OrderItemSerializer,OrderSerializer
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer,TokenRefreshSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -74,13 +74,34 @@ def  register(req):
     password=req.data["password"]
     # create a new user (encrypt password)
     try:
-        User.objects.create_user(username=username,password=password)
+        CustomUser.objects.create_user(username=username,password=password)
     except Exception as e:
         return Response(repr(e))    
     return Response(f"{username} registered")
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
+
+
+# Profile
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def get_user_profile(request):
+    user = request.user
+    serilaizer = CustomUserSerializer(user, many=False)
+    return Response(serilaizer.data)
+
+@api_view(["PUT"])
+@permission_classes([IsAuthenticated])
+def update_user_profile(request):
+    user = request.user
+    serializer = CustomUserSerializer(instance=user, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        print(serializer.data)
+        return Response(status=status.HTTP_200_OK, data=serializer.data)
+    return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
 
 
 
