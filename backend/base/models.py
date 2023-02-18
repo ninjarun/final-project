@@ -1,6 +1,16 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 
+
+
+class CustomUser(AbstractUser):
+    address = models.CharField(max_length = 150, null = True, blank = True)
+    phone_number = models.CharField(max_length = 20, null = True, blank = True)
+    age = models.IntegerField(null = True, blank = True)
+
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['email', 'first_name', 'last_name', 'phone_number']
 
 # Create your models here.
 class Product(models.Model):
@@ -14,7 +24,7 @@ class Product(models.Model):
 
 
 class Orders(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.user.username
