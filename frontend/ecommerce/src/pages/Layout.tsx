@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Outlet, Link } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import { useAppDispatch } from "../app/hooks";
 import { getAllProductsAsync } from "../features/Home/manyProductsSlice";
 import { refreshAsync, selectUser } from "../features/login/loginSlice";
@@ -19,6 +21,8 @@ const Layout = () => {
     return (
         <>
             <div style={{}}>
+            <ToastContainer />
+
                 <nav className="navigator">
                     <Link className="navBarLink mainLogo" to="/">
                         <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" className="bi bi-asterisk" viewBox="0 0 16 16">
@@ -54,6 +58,7 @@ const Layout = () => {
                         MyCart</Link>
                 </nav>
                 <br />
+
                 <Outlet />
             </div>
         </>

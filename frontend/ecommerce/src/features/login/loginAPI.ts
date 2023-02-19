@@ -13,11 +13,11 @@ export function userFetch(creds:any) {
 
 
 export function userRegister(creds:any) {
-  return new Promise<{ data: any }>((resolve) =>
+  return new Promise<{ data: any }>((resolve,reject) =>
     axios
       .post(SERVER+ "register", { username:creds.username, password:creds.password })
       .then((res) => resolve({ data: res.data }))
-      .catch((error)=>console.log(error))
+      .catch((error)=>reject(error.data))
   );
 }
   

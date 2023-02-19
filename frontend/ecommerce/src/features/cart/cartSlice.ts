@@ -8,15 +8,7 @@ const initialState: Cart = {
   products: []
 };
 
-// delete unNeeded
-export const addProdAsync = createAsyncThunk(
-  'product/userFetch',
-  async (creds: any) => {
-    console.log(creds.image.name)
-    // const response = await prodFetch(creds);
-    // return response.data;
-  }
-);
+
 
 // #####################################################################################################
 export const orderAsync = createAsyncThunk(
@@ -32,6 +24,7 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action) => {
+      console.log(action.payload)
       const tmpItem: Product = action.payload
       const tmpAr: Product[] = state.products.filter(x => x.id === tmpItem.id)
       // check if item already exists in products array
@@ -39,8 +32,9 @@ export const cartSlice = createSlice({
         tmpAr[0].amount += 1
       } else {
         // if doesn't exist will push
-        action.payload.amount = 1
-        state.products.push(action.payload)
+        console.log(action.payload)
+        const tmp:Product={...action.payload, amount:1}
+        state.products.push(tmp)
       }
 
     },
@@ -70,10 +64,9 @@ export const cartSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
-      .addCase(addProdAsync.fulfilled, (state, action) => {
-      })
+    
       .addCase(orderAsync.fulfilled, (state, action) => {
-        console.log(action.payload          )
+        console.log(action.payload)
       })
   },
 });

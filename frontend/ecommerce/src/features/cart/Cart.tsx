@@ -5,9 +5,9 @@ import "./cart.css"
 import { useAppDispatch } from '../../app/hooks'
 import { remove_prod_cart } from "./cartSlice"
 import { SERVER } from '../../globalVar'
-import { selectUser, selectUserID } from '../login/loginSlice'
+import { selectUser } from '../login/loginSlice'
 const Cart = () => {
-  const userID: string = useSelector(selectUserID)
+  // const userID: string = useSelector(selectUserID)
   const cart = useSelector(selectCart)
   const dispatch = useAppDispatch()
   const [total, settotal] = useState(0)

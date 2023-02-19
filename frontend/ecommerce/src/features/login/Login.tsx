@@ -1,9 +1,14 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { loginAsync, registerAsync, selectUser } from "../login/loginSlice"
 import { useAppDispatch } from "../../app/hooks"
 import { useSelector } from 'react-redux'
 import Admin from '../adminTools/Admin'
 import "./login.css"
+
+
+
+import { toast, ToastContainer } from 'react-toastify';
+
 const Login = () => {
   
   const currentUser: string = useSelector(selectUser)
@@ -16,6 +21,7 @@ const Login = () => {
 
   return (
     // will show login form only if currentUser is empty
+   <div> 
     <div style={{ padding: "50px",textAlign: "center" }}>
       {/* ################################### register form ################################### */}
       <div className='reg_popup' style={reg_flag ? { } : { display: "none"}}>
@@ -41,6 +47,7 @@ const Login = () => {
       <div style={currentUser === "admin" ? {} : { display: "none" }}>
         <Admin />
       </div>
+    </div>
     </div>
   )
 }

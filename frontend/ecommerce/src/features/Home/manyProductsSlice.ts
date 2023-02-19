@@ -37,6 +37,7 @@ export const productsSlice = createSlice({
 
       .addCase(getAllProductsAsync.fulfilled, (state, action) => {
         console.log(action.payload)
+        console.log(action.payload)
           state.products = action.payload
           state.products.forEach((e)=>
          { !state.categories.includes(e.category) &&  state.categories.push(e.category)}

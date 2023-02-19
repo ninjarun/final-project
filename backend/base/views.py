@@ -75,9 +75,11 @@ def  register(req):
     # create a new user (encrypt password)
     try:
         CustomUser.objects.create_user(username=username,password=password)
+        return Response({username,password} )
     except Exception as e:
-        return Response(repr(e))    
-    return Response(f"{username} registered")
+        if "UNIQUE" in str(e):
+            return Response('Exists',status=status.HTTP_400_BAD_REQUEST) 
+       
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
