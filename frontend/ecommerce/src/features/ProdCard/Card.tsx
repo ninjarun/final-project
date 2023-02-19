@@ -1,24 +1,34 @@
 import React from 'react'
+import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../app/hooks';
 import { SERVER } from '../../globalVar';
 import Product from '../../models/Product';
+import { removeProdAsync } from '../adminTools/productSlice';
 import { addToCart } from '../cart/cartSlice';
+import { selectUser } from '../login/loginSlice';
 import "./card.css"
 const Card = (props: any) => {
     const dispatch = useAppDispatch()
+    const currentUser: string = useSelector(selectUser)
+    const handle_remove = async () => {
+        await dispatch(removeProdAsync(props.prod.id))
+        props.update_products()
+    }
 
     return (
         <div className='main'>
             <div className='img_container'>
                 <img src={`${SERVER}static${props.img}`} alt="Bootstrap" width="120px" height="120px" />
                 <div onClick={() => dispatch(addToCart(props.prod))} className='add2cart_btn '>+ Add</div>
+                
+                <div style={currentUser == 'admin'? {backgroundColor:"red"}:{display:"none"} } onClick={handle_remove} className='add2cart_btn '>rmv prod</div>
             </div>
 
             <div className='details_container'>
                 <strong>
                     {props.price}<br />
-                {props.name}<br />
-                {props.desc}<br />
+                    {props.name}<br />
+                    {props.desc}<br />
                 </strong>
 
             </div>

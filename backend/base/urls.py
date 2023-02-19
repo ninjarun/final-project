@@ -7,6 +7,7 @@ urlpatterns = [
     # path('', views.index),
     # path('products', views.products),
     path('myProducts',views.myProducts),
+    path('myProducts/<int:pk>', views.APIViews.as_view(), name='product_detail'),
     path('login', views.MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('register',views.register ),
     path('refresh',views.RefreshTokenView.as_view(),name='refresh_token'),

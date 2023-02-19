@@ -34,6 +34,7 @@ export const loginAsync = createAsyncThunk(
 export const registerAsync = createAsyncThunk(
   'register/regUser',
   async (creds: any) => {
+    console.log(creds)
     const response = await userRegister(creds);
     return response.data;
   }
@@ -69,9 +70,9 @@ export const loginSlice = createSlice({
     builder
       .addCase(loginAsync.fulfilled, (state, action) => {
         localStorage.setItem('refresh', action.payload.refresh)
+        localStorage.setItem('axx', action.payload.access)
         const tmp: any = jwt_decode(action.payload.access)
         state.userLogged = tmp.username
-        // state.userID = tmp.user_id
         { tmp.username == "admin" ? state.isAdmin = true : state.isAdmin = false }
         toast.success(`Welcome ${tmp.username}`, {
           position: toast.POSITION.TOP_CENTER
@@ -83,21 +84,30 @@ export const loginSlice = createSlice({
         })
 
       })
-      // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
       .addCase(registerAsync.fulfilled, (state, action) => {
-        console.log(action.payload)
+        localStorage.setItem('refresh', action.payload.tokens.refresh)
+        localStorage.setItem('axx', action.payload.tokens.access)
+        state.userLogged = action.payload.user.username
+        toast.success(`Registerd Successfully`, {
+          position: toast.POSITION.TOP_CENTER
+        })
 
       })
       .addCase(registerAsync.rejected, (state, action) => {
-        console.log(action.payload)
-console.log('reject')
+        console.log(action)
+        toast.error(action.error.message, {
+          position: toast.POSITION.TOP_CENTER
+        })
+        
       })
+
 
       .addCase(refreshAsync.fulfilled, (state, action) => {
         console.log(action.payload)
         localStorage.setItem('refresh', action.payload.refresh)
         localStorage.setItem('axx', action.payload.access)
         const tmp: any = jwt_decode(action.payload.access)
+        console.log(tmp)
         state.userLogged = tmp.username
         // state.userID = tmp.user_id
 

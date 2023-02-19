@@ -17,3 +17,10 @@ export function addProdFetch(creds:any) {
         .then((res) => resolve({ data: res.data }))
     );
   }
+ 
+  export function rmv_prod(creds:any) {
+    return new Promise<{ data: any }>((resolve) =>
+    axios.delete(SERVER + `myProducts/${creds}`)
+        .then((res) => resolve({ data: res.data }))
+    );
+  }

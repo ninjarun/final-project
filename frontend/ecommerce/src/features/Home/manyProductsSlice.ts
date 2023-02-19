@@ -1,9 +1,9 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState, AppThunk } from '../../app/store';
 import Products from "../../models/manyProducts"
-
 import { getAllProducts } from './manyProductsAPI';
 
+//  THIS STATE HOLDS ALL PRODUCTS AND THEIR CATEGORIES 
 
 const initialState: Products = {
   products: [],

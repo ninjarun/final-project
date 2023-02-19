@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState, AppThunk } from '../../app/store';
-import { addProdFetch, getAllProducts } from './productAPI';
+import { addProdFetch, getAllProducts, rmv_prod } from './productAPI';
 import Product from "../../models/Product"
 
 
@@ -22,6 +22,14 @@ export const addProdAsync = createAsyncThunk(
   }
 );
 
+export const removeProdAsync = createAsyncThunk(
+  'product/rmvProd',
+  async (creds: any) => {
+    console.log(creds)
+    const response = await rmv_prod(creds);
+    return response.data;
+  }
+);
 
 // export const getAllProductsAsync = createAsyncThunk(
 //   'product/getAllProducts',
@@ -46,6 +54,9 @@ export const productSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(addProdAsync.fulfilled, (state, action) => {
+        console.log(action.payload)
+      })
+      .addCase(removeProdAsync.fulfilled, (state, action) => {
         console.log(action.payload)
       })
       // .addCase(getAllProductsAsync.fulfilled, (state, action) => {

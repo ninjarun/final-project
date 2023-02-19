@@ -7,21 +7,39 @@ import { useAppDispatch } from "../app/hooks";
 import { getAllProductsAsync } from "../features/Home/manyProductsSlice";
 import { refreshAsync, selectUser } from "../features/login/loginSlice";
 import "./layout.css"
+import jwt_decode from "jwt-decode"
 
 const Layout = () => {
 
     const currentUser: string = useSelector(selectUser)
-    //  refreshes users tokens - need to be fixed - add if condition so that only if token is about to expire so it will run 
     const dispatch = useAppDispatch()
+
+    
+    //  refreshes users tokens - 
     useEffect(() => {
-        const tmp: any = localStorage.getItem('refresh')
-        { tmp && dispatch(refreshAsync(tmp)) }
+        const token = localStorage.getItem('axx')
+        const refresh = localStorage.getItem('refresh')
+        
+        if (token) {
+            const decodedToken: any = jwt_decode(token)
+            const now = Math.floor(Date.now() / 1000)
+            const expiresIn = decodedToken.exp - now
+            
+            // check if token is about to expire within next 60 minutes
+            if (expiresIn <= 3600) {
+                console.log('test')
+                dispatch(refreshAsync(refresh))
+            }
+            // else call load user reducer *need to be made
+        }
     }, [])
+
+
 
     return (
         <>
             <div style={{}}>
-            <ToastContainer />
+                <ToastContainer />
 
                 <nav className="navigator">
                     <Link className="navBarLink mainLogo" to="/">
