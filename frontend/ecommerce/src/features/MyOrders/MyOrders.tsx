@@ -1,8 +1,44 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import { useAppDispatch } from '../../app/hooks'
+import { Order } from '../../models/myOrders'
+import Product from '../../models/Product'
+import { selectOrders, userOrdersAsync } from './myOrdersSlice'
 
 const MyOrders = () => {
+  const dispatch = useAppDispatch()
+  const orders = useSelector(selectOrders)
+  console.log(orders)
+  useEffect(() => {
+    dispatch(userOrdersAsync())
+  }, [])
+
   return (
-    <div>MyOrders</div>
+    // <div>MyOrders</div>
+    // *********************
+    <div>
+      <h2>My Orders</h2>
+      {orders.map((order: Order) => (
+        <div key={order.orderID}>
+          <p>Order ID: {order.orderID}</p>
+          <p>User: {order.user}</p>
+          <ul>
+            {order.orderItems.map((product: Product) => (
+              <li key={product.id}>
+                {/* <Product product={product} /> */}
+                  <h3>{product.name}</h3>
+                  <p>{product.description}</p>
+                  <p>Price: ${product.price}</p>
+                  <p>Category: {product.category}</p>
+                  {/* Add any other product details you want to display */}
+                {/*  */}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+    // ******************
   )
 }
 
