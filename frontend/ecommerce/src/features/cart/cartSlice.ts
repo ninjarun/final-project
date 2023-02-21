@@ -5,8 +5,7 @@ import { Cart } from "../../models/Cart"
 import Product from '../../models/Product';
 
 const initialState: Cart = {
-  products: [],
-  total: 0
+  products: []
 };
 
 

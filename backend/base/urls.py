@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.urls import path
 from . import views
-from .views import PaymentView, ExecutePaymentView,CancelPaymentView
 
 urlpatterns = [
     # path('', views.index),
@@ -17,9 +16,6 @@ urlpatterns = [
     path('order',views.order ),
     path('get_profile',views.get_user_profile ),
     path('upd_profile',views.update_user_profile ),
-    path('payment/create/', views.PaymentView.as_view(), name='create-payment'),
-    path('payment/execute/',views.ExecutePaymentView.as_view(), name='execute-payment'),
-    path('payment/cancel/', views.CancelPaymentView.as_view(), name='cancel-payment'),
 
 
 ]

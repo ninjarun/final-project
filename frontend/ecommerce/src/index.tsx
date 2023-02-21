@@ -13,6 +13,7 @@ import Logout from './features/login/Logout';
 import "./index.css"
 import MyOrders from './features/MyOrders/MyOrders';
 import Departments from './features/Home/Departments';
+import Checkout from './features/cart/Checkout';
 export default function App() {
   return (
     <Provider store={store}>
@@ -27,6 +28,7 @@ export default function App() {
               <Route path="cart" element={<Cart />} />
               <Route path="myorders" element={<MyOrders />} />
               <Route path="departments" element={<Departments />} />
+              <Route path="checkout" element={<Checkout />} />
             </Route>
         </Routes>
       </BrowserRouter>

@@ -5,7 +5,7 @@ import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { useAppDispatch } from "../app/hooks";
 import { getAllProductsAsync } from "../features/Home/manyProductsSlice";
-import { refreshAsync, selectUser } from "../features/login/loginSlice";
+import { load_user, refreshAsync, selectUser } from "../features/login/loginSlice";
 import "./layout.css"
 import jwt_decode from "jwt-decode"
 
@@ -14,23 +14,26 @@ const Layout = () => {
     const currentUser: string = useSelector(selectUser)
     const dispatch = useAppDispatch()
 
-    
+
     //  refreshes users tokens - 
     useEffect(() => {
         const token = localStorage.getItem('axx')
         const refresh = localStorage.getItem('refresh')
-        
+
         if (token) {
             const decodedToken: any = jwt_decode(token)
             const now = Math.floor(Date.now() / 1000)
             const expiresIn = decodedToken.exp - now
-            
+
             // check if token is about to expire within next 60 minutes
             if (expiresIn <= 3600) {
                 console.log('test')
                 dispatch(refreshAsync(refresh))
             }
-            // else call load user reducer *need to be made
+            // else call load user reducer 
+            else {
+                dispatch(load_user(decodedToken))
+            }
         }
     }, [])
 

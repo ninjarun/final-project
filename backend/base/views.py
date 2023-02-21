@@ -16,9 +16,6 @@ from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework import status, generics
 
-import paypalrestsdk
-from django.shortcuts import redirect
-from django.urls import reverse
 
 
 # AUTHENTICATION
@@ -208,72 +205,3 @@ def order(req):
 
     return HttpResponse(serializer.errors)
 
-
-################################
-######## PAYPAL PAYMENT #########
-###############################
-class PaymentView(APIView):
-    def post(self, request, *args, **kwargs):
-        paypalrestsdk.configure({
-            'mode': 'sandbox',
-            'client_id': 'Acv35MxVCkOUiuPZvxSGnEhK7-RGjVWQvxtxbhDpALeyCVBoa5o3gnRSYvb9aiYCdZaz9VjPkjQOcGef',
-            'client_secret': 'EBMG8RagenXP9cFpGO5nHxD4f99hrkA2i-ipgLr5UN4KA3mx0NDjMF2ZOSnjIwyjp6EtJVA6mab99-TP'
-        })
-
-        payment = paypalrestsdk.Payment({
-            "intent": "sale",
-            "payer": {
-                "payment_method": "paypal"
-            },
-            "redirect_urls": {
-                "return_url": request.build_absolute_uri(reverse('execute-payment')),
-                "cancel_url": request.build_absolute_uri(reverse('cancel-payment')),
-            },
-            "transactions": [{
-                "item_list": {
-                    "items": [{
-                        "name": "Item Name",
-                        "sku": "Item SKU",
-                        "price": "10.00",
-                        "currency": "USD",
-                        "quantity": 1
-                    }]
-                },
-                "amount": {
-                    "total": "10.00",
-                    "currency": "USD"
-                },
-                "description": "Item Description"
-            }]
-        })
-
-        if payment.create():
-            payment_url = [link.href for link in payment.links if link.rel == 'approval_url'][0]
-            request.session['payment_id'] = payment.id
-            return redirect(payment_url)
-        else:
-            return Response(payment.error, status=status.HTTP_400_BAD_REQUEST)
-
-
-class ExecutePaymentView(APIView):
-    def get(self, request, *args, **kwargs):
-        paypalrestsdk.configure({
-            'mode': 'sandbox',
-            'client_id': 'Acv35MxVCkOUiuPZvxSGnEhK7-RGjVWQvxtxbhDpALeyCVBoa5o3gnRSYvb9aiYCdZaz9VjPkjQOcGef',
-            'client_secret': 'EBMG8RagenXP9cFpGO5nHxD4f99hrkA2i-ipgLr5UN4KA3mx0NDjMF2ZOSnjIwyjp6EtJVA6mab99-TP'
-        })
-
-        payment_id = request.session.get('payment_id')
-        payment = paypalrestsdk.Payment.find(payment_id)
-
-        if payment.execute({'payer_id': request.GET.get('PayerID')}):
-            # TODO: Process successful payment
-            return Response({'message': 'Payment executed successfully'}, status=status.HTTP_200_OK)
-        else:
-            return Response(payment.error, status=status.HTTP_400_BAD_REQUEST)
-
-
-class CancelPaymentView(APIView):
-    def get(self, request, *args, **kwargs):
-        # TODO: Handle payment cancellation
-        return Response({'message': 'Payment was cancelled'}, status=status.HTTP_200_OK)
