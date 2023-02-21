@@ -1,5 +1,6 @@
 import Product from "./Product"
 
 export interface Cart {
-    products: Product[]
+    products: Product[],
+    total:number
 }

@@ -5,7 +5,8 @@ import { Cart } from "../../models/Cart"
 import Product from '../../models/Product';
 
 const initialState: Cart = {
-  products: []
+  products: [],
+  total: 0
 };
 
 
@@ -24,7 +25,6 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action) => {
-      console.log(action.payload)
       const tmpItem: Product = action.payload
       const tmpAr: Product[] = state.products.filter(x => x.id === tmpItem.id)
       // check if item already exists in products array
@@ -32,8 +32,7 @@ export const cartSlice = createSlice({
         tmpAr[0].amount += 1
       } else {
         // if doesn't exist will push
-        console.log(action.payload)
-        const tmp:Product={...action.payload, amount:1}
+        const tmp: Product = { ...action.payload, amount: 1 }
         state.products.push(tmp)
       }
 
@@ -50,11 +49,12 @@ export const cartSlice = createSlice({
       {
         action.payload.amount === 1 ? tmpAr[0].amount += 1 : tmpAr[0].amount += -1
       }
-      
-      if (tmpAr[0].amount === 0){ 
-        state.products =  state.products.filter(x => x.id != action.payload.id)}
 
-    }
+      if (tmpAr[0].amount === 0) {
+        state.products = state.products.filter(x => x.id != action.payload.id)
+      }
+
+    },
 
 
 
@@ -64,7 +64,7 @@ export const cartSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
-    
+
       .addCase(orderAsync.fulfilled, (state, action) => {
         console.log(action.payload)
       })
@@ -73,5 +73,4 @@ export const cartSlice = createSlice({
 
 export const { addToCart, remove_prod_cart, change_amount } = cartSlice.actions;
 export const selectCart = (state: RootState) => state.cart.products;
-
 export default cartSlice.reducer;

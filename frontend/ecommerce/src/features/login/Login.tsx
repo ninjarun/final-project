@@ -16,15 +16,15 @@ const Login = () => {
   const [username, setusername] = useState("")
   const [password, setpassword] = useState("")
   const [pwd_confirm, setpwd_confirm] = useState("")
-const [address, setaddress] = useState("")
-const [phoneNum, setphoneNum] = useState("")
-const [email, setemail] = useState("")
+  const [address, setaddress] = useState("")
+  const [phoneNum, setphoneNum] = useState("")
+  const [email, setemail] = useState("")
   const [reg_flag, setreg_flag] = useState(false)
 
-  const handleReg=()=>{
-     dispatch(registerAsync({ username, password,address,"phone_number":phoneNum, email }))
-setreg_flag(!reg_flag)
-}
+  const handleReg = () => {
+    dispatch(registerAsync({ username, password, address, "phone_number": phoneNum, email }))
+    setreg_flag(!reg_flag)
+  }
 
   return (
     // will show login form only if currentUser is empty
@@ -40,9 +40,9 @@ setreg_flag(!reg_flag)
           <input onChange={(e) => setusername(e.target.value)} placeholder='User Name' type={'email'} /><br /><br />
           <input onChange={(e) => setpassword(e.target.value)} placeholder='Password' type='password' /><br /><br />
           <input onChange={(e) => setpwd_confirm(e.target.value)} placeholder='Confirm Password' type='password' /> <br /><br />
-         
-          <div style={password != pwd_confirm ? {}:{display:"none"}}>passwords don't match</div>
-          <button style={password != pwd_confirm ? {cursor:"not-allowed",  pointerEvents: "none"}:{}} onClick={() =>handleReg()}>register</button>
+
+          <div style={password != pwd_confirm ? {} : { display: "none" }}>passwords don't match</div>
+          <button style={password != pwd_confirm ? { cursor: "not-allowed", pointerEvents: "none" } : {}} onClick={() => handleReg()}>register</button>
         </div>
         {/* ################################### login form ################################### */}
         <div className='login_box'>

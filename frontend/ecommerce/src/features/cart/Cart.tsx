@@ -1,28 +1,31 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { change_amount, orderAsync, selectCart } from './cartSlice'
+import {  change_amount, orderAsync, selectCart } from './cartSlice'
 import "./cart.css"
 import { useAppDispatch } from '../../app/hooks'
 import { remove_prod_cart } from "./cartSlice"
 import { SERVER } from '../../globalVar'
 import { selectUser } from '../login/loginSlice'
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import { stringify } from 'querystring'
+import { debug } from 'console'
+
 const Cart = () => {
-  // const userID: string = useSelector(selectUserID)
   const cart = useSelector(selectCart)
   const dispatch = useAppDispatch()
   const [total, settotal] = useState(0)
+var tmptotal=total
 
   useEffect(() => {
-    let tmp: number = 0
+    let tmp = 0
     cart.forEach(x => tmp = tmp + x.price * x.amount)
     settotal(tmp)
+
   }, [cart])
 
 
 
-  // const tmp:Product[]=cart.forEach((prod)=> )
-
-    return (
+  return (
     <div style={{ display: "flex", margin: "auto" }}>
       <div className='items_list'>
         {cart.map((prod, i) =>
@@ -50,7 +53,29 @@ const Cart = () => {
       <div className='order_summary'>
         <h3>Summary</h3>
         <h5>Total {total}$</h5>
-        <div onClick={()=>dispatch(orderAsync(cart))}>send order</div>
+
+        <div onClick={() => dispatch(orderAsync(cart))}>send order</div>
+
+        <PayPalScriptProvider options={{ "client-id": "Acv35MxVCkOUiuPZvxSGnEhK7-RGjVWQvxtxbhDpALeyCVBoa5o3gnRSYvb9aiYCdZaz9VjPkjQOcGef" }}>
+          <PayPalButtons
+            createOrder={(data, actions) => {
+              return actions.order.create({
+                purchase_units: [
+                  {
+                    amount: {
+                      value: tmptotal.toString(),
+                    },
+                  },
+                ],
+              });
+            }}
+            onApprove={async (data: any, actions: any) => {
+              const details = await actions.order.capture();
+              const name = details.payer.name.given_name;
+              alert("Transaction completed by " + name);
+            }}
+          />        </PayPalScriptProvider>
+
       </div>
 
     </div>
