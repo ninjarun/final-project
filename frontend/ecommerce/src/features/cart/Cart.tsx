@@ -6,13 +6,13 @@ import { useAppDispatch } from '../../app/hooks'
 import { remove_prod_cart } from "./cartSlice"
 import { SERVER } from '../../globalVar'
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
-import { Link } from 'react-router-dom'
+import { Link, redirect } from 'react-router-dom'
 
 const Cart = () => {
   const cart = useSelector(selectCart)
   const dispatch = useAppDispatch()
   const [total, settotal] = useState(0)
-
+  const [flag, setflag] = useState(false)
 
   let newtotal = 0
   useEffect(() => {
@@ -22,6 +22,11 @@ const Cart = () => {
     newtotal = tmp
   }, [cart])
 
+  const handlecheckout = () => {
+    setflag(!flag)
+    return redirect("/cart")
+
+  }
 
   return (
     <div style={{ display: "flex", margin: "auto" }}>
@@ -40,9 +45,9 @@ const Cart = () => {
               <h3>{prod.price}$</h3>
             </div>
             <div className='amount_set'>
-              <span className='amount_btn' onClick={() => dispatch(change_amount({ "id": prod.id, 'amount': -1 }))}>-</span>
+              {!flag && <span className='amount_btn' onClick={() => dispatch(change_amount({ "id": prod.id, 'amount': -1 }))}>-</span>}
               <span className='amount_info'> {prod.amount}</span>
-              <span className='amount_btn' onClick={() => dispatch(change_amount({ "id": prod.id, 'amount': 1 }))}>+</span>
+              {!flag && <span className='amount_btn' onClick={() => dispatch(change_amount({ "id": prod.id, 'amount': 1 }))}>+</span>}
             </div>
           </div>)
         }
@@ -52,8 +57,32 @@ const Cart = () => {
         <h3>Summary</h3>
         <h5>Total {total}$</h5>
 
-        <Link to={"/checkout"} >checkout</Link>
-        <div onClick={() => dispatch(orderAsync(cart))}>send order</div>
+        {/* <Link to={"/checkout"} >checkout</Link> */}
+
+        {!flag ? <div onClick={handlecheckout}>checkout test</div> : <PayPalScriptProvider options={{ "client-id": "Acv35MxVCkOUiuPZvxSGnEhK7-RGjVWQvxtxbhDpALeyCVBoa5o3gnRSYvb9aiYCdZaz9VjPkjQOcGef" }}>
+          <PayPalButtons
+            createOrder={(data, actions) => {
+              return actions.order.create({
+                purchase_units: [
+                  {
+                    amount: {
+                      value: total.toString(),
+                    },
+                  },
+                ],
+              });
+            }}
+            onApprove={async (data: any, actions: any) => {
+              const details = await actions.order.capture();
+              const name = details.payer.name.given_name;
+              alert("Transaction completed by " + name);
+              dispatch(orderAsync(cart))
+            }}
+          />        </PayPalScriptProvider>}
+       {flag && <div onClick={() => setflag(!flag)}>make more changes!</div>}
+
+
+        {/* <div onClick={() => dispatch(orderAsync(cart))}>send order</div> */}
 
 
       </div>

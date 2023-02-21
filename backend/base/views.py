@@ -205,3 +205,9 @@ def order(req):
 
     return HttpResponse(serializer.errors)
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_orders(req):
+    orders = Orders.objects.filter(user=req.user)
+    serializer = OrderSerializer(orders, many=True)
+    return Response(serializer.data)

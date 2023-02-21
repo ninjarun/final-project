@@ -24,21 +24,21 @@ class OrderSerializer(serializers.ModelSerializer):
     orderItems = serializers.SerializerMethodField(read_only=True)
     user = serializers.SerializerMethodField(read_only=True)
 
-
     class Meta:
         model = Orders
         fields = '__all__'
     
     def create(self, validated_data):
         user = self.context['user']
-        print(user)
-        return Orders.objects.create(**validated_data,user=user)
-
+        return Orders.objects.create(**validated_data, user=user)
 
     def get_orderItems(self, obj):
         items = obj.orderitem_set.all()
         serializer = OrderItemSerializer(items, many=True)
         return serializer.data
+    
+    def get_user(self, obj):
+        return obj.user.username
 
 
 
