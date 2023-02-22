@@ -1,15 +1,15 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState, AppThunk } from '../../app/store';
-import MyOrders from "../../models/myOrders"
+import MyOrders, { Order } from "../../models/myOrders"
+import Product from '../../models/Product';
 import { getOrders } from './myOrderAPI';
 
 //  THIS STATE HOLDS ALL PRODUCTS AND THEIR CATEGORIES 
 
 const initialState: MyOrders = {
-  orders: []
+  orders: [],
+  productsOrderd: []
 };
-
-
 
 export const userOrdersAsync = createAsyncThunk(
   'myorder/usersOrders',
@@ -26,17 +26,20 @@ export const myOrdersSlice = createSlice({
   reducers: {
     // todo
     // getProductByCategory: (state, action) => {    },
-
-
-
   },
 
   extraReducers: (builder) => {
     builder
-
       .addCase(userOrdersAsync.fulfilled, (state, action) => {
-        console.log(action.payload)
-        state.orders=[...action.payload]
+        state.orders = [...action.payload]
+        state.orders.forEach((order: any) => {
+          order.orderItems.forEach((product: Product) => {
+            if (product.id) {
+              const tmpID = product.id
+              { !state.productsOrderd.includes(tmpID) && state.productsOrderd.push(tmpID) }
+            }
+          });
+        });
       })
   },
 });
@@ -44,5 +47,6 @@ export const myOrdersSlice = createSlice({
 export const { } = myOrdersSlice.actions;
 // export const selectProducts = (state: RootState) => state.productz.products;
 export const selectOrders = (state: RootState) => state.myOrders.orders;
+export const selectProdctsOrderd = (state: RootState) => state.myOrders.productsOrderd;
 
 export default myOrdersSlice.reducer;

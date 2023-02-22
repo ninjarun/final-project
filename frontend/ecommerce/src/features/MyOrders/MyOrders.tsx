@@ -13,18 +13,20 @@ const MyOrders = () => {
     dispatch(userOrdersAsync())
   }, [])
 
+
+
   return (
     // <div>MyOrders</div>
     // *********************
     <div>
       <h2>My Orders</h2>
       {orders.map((order: Order) => (
-        <div key={order.orderID}>
-          <p>Order ID: {order.orderID}</p>
+        <div key={order.id}>
+          <p>Order ID: {order.id}</p>
           <p>User: {order.user}</p>
           <ul>
-            {order.orderItems.map((product: Product) => (
-              <li key={product.id}>
+            {order.orderItems.map((product: Product,i) => (
+              <li key={i}>
                 {/* <Product product={product} /> */}
                   <h3>{product.name}</h3>
                   <p>{product.description}</p>

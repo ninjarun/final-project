@@ -6,22 +6,26 @@ import Product from '../../models/Product';
 import { removeProdAsync } from '../adminTools/productSlice';
 import { addToCart } from '../cart/cartSlice';
 import { selectUser } from '../login/loginSlice';
+import { selectProdctsOrderd } from '../MyOrders/myOrdersSlice';
 import "./card.css"
 const Card = (props: any) => {
+
     const dispatch = useAppDispatch()
     const currentUser: string = useSelector(selectUser)
+    const productsOrderd:number[]=useSelector(selectProdctsOrderd)
     const handle_remove = async () => {
         await dispatch(removeProdAsync(props.prod.id))
         props.update_products()
     }
-
+    console.log(productsOrderd)
+console.log(props.id)
     return (
         <div className='main'>
             <div className='img_container'>
                 <img src={`${SERVER}static${props.img}`} alt="Bootstrap" width="120px" height="120px" />
-                <div onClick={() => dispatch(addToCart(props.prod))} className='add2cart_btn '>+ Add</div>
-                
-                <div style={currentUser == 'admin'? {backgroundColor:"red"}:{display:"none"} } onClick={handle_remove} className='add2cart_btn '>rmv prod</div>
+        <div onClick={() => dispatch(addToCart(props.prod))} className='add2cart_btn '>+ Add</div>
+        {productsOrderd.includes( props.prod.id) ? <div >Review</div>:<div></div>}
+                <div style={currentUser == 'admin' ? { backgroundColor: "red" } : { display: "none" }} onClick={handle_remove} className='add2cart_btn '>rmv prod</div>
             </div>
 
             <div className='details_container'>
