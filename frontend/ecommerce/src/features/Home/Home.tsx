@@ -13,6 +13,7 @@ const Home = () => {
   const dispatch = useAppDispatch()
   const prods = useSelector(selectProducts)
   const [flag, setflag] = useState(false)
+
   useEffect(() => {
     dispatch(getAllProductsAsync())
   }, []);

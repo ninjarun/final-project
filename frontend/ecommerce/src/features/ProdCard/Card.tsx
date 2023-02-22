@@ -12,29 +12,27 @@ const Card = (props: any) => {
 
     const dispatch = useAppDispatch()
     const currentUser: string = useSelector(selectUser)
-    const productsOrderd:number[]=useSelector(selectProdctsOrderd)
+    const productsOrderd: number[] = useSelector(selectProdctsOrderd)
     const handle_remove = async () => {
         await dispatch(removeProdAsync(props.prod.id))
         props.update_products()
     }
     console.log(productsOrderd)
-console.log(props.id)
+    // console.log(props.id)
     return (
         <div className='main'>
             <div className='img_container'>
                 <img src={`${SERVER}static${props.img}`} alt="Bootstrap" width="120px" height="120px" />
-        <div onClick={() => dispatch(addToCart(props.prod))} className='add2cart_btn '>+ Add</div>
-        {productsOrderd.includes( props.prod.id) ? <div >Review</div>:<div></div>}
+                <div onClick={() => dispatch(addToCart(props.prod))} className='add2cart_btn '>+ Add</div>
+                {productsOrderd.includes(props.prod.id) ? <div className='add2cart_btn' style={{ background: 'green' }} >Review</div> : <div></div>}
                 <div style={currentUser == 'admin' ? { backgroundColor: "red" } : { display: "none" }} onClick={handle_remove} className='add2cart_btn '>rmv prod</div>
             </div>
-
             <div className='details_container'>
                 <strong>
                     {props.price}<br />
                     {props.name}<br />
                     {props.desc}<br />
                 </strong>
-
             </div>
             <div className='icon'>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-heart" viewBox="0 0 16 16">

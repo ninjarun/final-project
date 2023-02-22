@@ -27,14 +27,6 @@ const Admin = () => {
         dispatch(addProdAsync({ name, price, "description":desc, "image":img, category  }))
     }
 
-    // useEffect(() => {
-    //     if (currentUser != "admin") {
-    //         navigate("/")
-    //     }
-    // }, [])
-
-
-
     return (
         <div> 
             Admin - store managment
@@ -47,10 +39,6 @@ const Admin = () => {
             product category: <input onChange={(e) => setcategory(e.target.value)} /><br />
             image: <input type="file" accept="image/png,image/jpeg" onChange={handleImg} />
             <button onClick={sendProduct}>upload</button>
-
-
-
-
         </div>
     )
 }

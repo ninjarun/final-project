@@ -52,7 +52,6 @@ const Cart = () => {
           </div>)
         }
       </div>
-
       <div className='order_summary'>
         <h3>Summary</h3>
         <h5>Total {total}$</h5>

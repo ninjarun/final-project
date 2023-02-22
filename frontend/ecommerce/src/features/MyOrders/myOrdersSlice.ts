@@ -31,13 +31,12 @@ export const myOrdersSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(userOrdersAsync.fulfilled, (state, action) => {
+        console.log('aceepted',action.payload)
+        console.log('axxxxxx')
         state.orders = [...action.payload]
         state.orders.forEach((order: any) => {
-          order.orderItems.forEach((product: Product) => {
-            if (product.id) {
-              const tmpID = product.id
-              { !state.productsOrderd.includes(tmpID) && state.productsOrderd.push(tmpID) }
-            }
+          order.orderItems.forEach((product: any) => {
+              { !state.productsOrderd.includes(product.orderItems.product) && state.productsOrderd.push(product.orderItems.product) }
           });
         });
       })
