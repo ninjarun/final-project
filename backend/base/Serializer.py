@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import CustomUser, Product,OrderItem,Orders
+from .models import CustomUser, Product,OrderItem,Orders,Review
 
 
 
@@ -67,3 +67,20 @@ class CustomUserSerializer(serializers.ModelSerializer):
     def create(self, validated_data): 
         user = self.context['user']
         return CustomUser.objects.create(**validated_data, user = user)
+
+
+
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = '__all__'
+    
+    def create(self, validated_data):
+        user = self.context['user']
+        return Review.objects.create(**validated_data, user=user)
+
+    # def create(self, validated_data):
+    #     user = self.context['user']
+    #     return Review.objects.create(user=user,  **validated_data)

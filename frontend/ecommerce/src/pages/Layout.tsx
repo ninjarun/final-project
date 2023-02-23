@@ -5,7 +5,7 @@ import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { useAppDispatch } from "../app/hooks";
 import { getAllProductsAsync } from "../features/Home/manyProductsSlice";
-import { load_user, refreshAsync, selectUser } from "../features/login/loginSlice";
+import { load_user, logoutAsync, refreshAsync, selectUser } from "../features/login/loginSlice";
 import "./layout.css"
 import jwt_decode from "jwt-decode"
 
@@ -21,21 +21,22 @@ const Layout = () => {
         const refresh = localStorage.getItem('refresh')
 
         if (token) {
-            const decodedToken: any = jwt_decode(token)
-            const now = Math.floor(Date.now() / 1000)
-            const expiresIn = decodedToken.exp - now
-
+            const decodedToken: any = jwt_decode(token);
+            const now = Math.floor(Date.now() / 1000);
+            const expiresIn = decodedToken.exp - now;
+        
             // check if token is about to expire within next 60 minutes
-            if (expiresIn <= 3600) {
-                console.log('test')
-                dispatch(refreshAsync(refresh))
-            }
-            // else call load user reducer 
-            else {
-                dispatch(load_user(decodedToken))
+            if (expiresIn <= 3600 && expiresIn > 0) { // check if token is about to expire or has already expired
+                console.log('test');
+                dispatch(refreshAsync(refresh));
+            } else if (expiresIn <= 0) { // check if token has already expired
+                console.log('token expired');
+                dispatch(logoutAsync(token)); // dispatch a logout action to clear the expired token and log the user out
+            } else {
+                dispatch(load_user(decodedToken));
             }
         }
-    }, [])
+            }, [])
 
 
 

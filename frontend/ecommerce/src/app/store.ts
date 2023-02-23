@@ -4,6 +4,7 @@ import cartReducer, { orderAsync } from '../features/cart/cartSlice';
 import loginReducer from '../features/login/loginSlice';
 import productsReducer from '../features/Home/manyProductsSlice';
 import myOrdersReducer from '../features/MyOrders/myOrdersSlice';
+import reviewReducer from '../features/review/reviewSlice';
 
 export const store = configureStore({
   reducer: {
@@ -11,7 +12,8 @@ export const store = configureStore({
     product: productReducer,
     cart: cartReducer,
     productz: productsReducer,
-    myOrders: myOrdersReducer
+    myOrders: myOrdersReducer,
+    review:reviewReducer
   },
 });
 

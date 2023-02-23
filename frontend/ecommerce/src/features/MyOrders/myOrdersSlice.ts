@@ -4,7 +4,7 @@ import MyOrders, { Order } from "../../models/myOrders"
 import Product from '../../models/Product';
 import { getOrders } from './myOrderAPI';
 
-//  THIS STATE HOLDS ALL PRODUCTS AND THEIR CATEGORIES 
+//  THIS STATE HOLDS ALL THE ORDERS THE USER MADE
 
 const initialState: MyOrders = {
   orders: [],
@@ -31,12 +31,12 @@ export const myOrdersSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(userOrdersAsync.fulfilled, (state, action) => {
-        console.log('aceepted',action.payload)
-        console.log('axxxxxx')
         state.orders = [...action.payload]
         state.orders.forEach((order: any) => {
           order.orderItems.forEach((product: any) => {
-              { !state.productsOrderd.includes(product.orderItems.product) && state.productsOrderd.push(product.orderItems.product) }
+            // add to productsOrderd all the product id's that user orderd - so we can give 
+            // permission to user to make a review on a item he orderd
+              { !state.productsOrderd.includes(product.product) && state.productsOrderd.push(product.product) }
           });
         });
       })

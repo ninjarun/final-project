@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 
-from .models import CustomUser, Product, OrderItem, Orders
+from .models import CustomUser, Product, OrderItem, Orders,Review
 from django.contrib.auth.models import User
 from django.contrib.auth import logout, authenticate
-from .Serializer import CustomUserSerializer, ProductSerializer, OrderItemSerializer, OrderSerializer
+from .Serializer import CustomUserSerializer, ProductSerializer, OrderItemSerializer, OrderSerializer,ReviewSerializer
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, TokenRefreshSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -18,7 +18,9 @@ from rest_framework import status, generics
 
 
 
-# AUTHENTICATION
+# =============================================
+## =========== AUTHENTICATION VIEW ============
+# =============================================
 
 # logout
 class LogoutAPIView(APIView):
@@ -35,7 +37,6 @@ class RefreshTokenView(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         return Response(serializer.validated_data, status=status.HTTP_200_OK)
-
 
 #login
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -89,8 +90,9 @@ def register(request):
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
-
-# Profile
+# =====================================
+## =========== PROFILE VIEW ===========
+# =====================================
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
@@ -168,8 +170,9 @@ class APIViews(APIView):
             return Response(status=status.HTTP_204_NO_CONTENT)
 # //////////// end      image upload / display
 
-
-# order view
+# ==================================
+## =========== order view ==========
+# ==================================
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def order(req):
@@ -211,3 +214,49 @@ def get_orders(req):
     orders = Orders.objects.filter(user=req.user)
     serializer = OrderSerializer(orders, many=True)
     return Response(serializer.data)
+
+# =======================================
+## =========== REVIEW VIEW ==============
+# =======================================
+# views.py
+
+# # move import upppp=============================================================================
+# from rest_framework.permissions import IsAuthenticatedOrReadOnly
+# # ==========================================================================================
+# class ReviewListCreateAPIView(generics.ListCreateAPIView):
+#     queryset = Review.objects.all()
+#     serializer_class = ReviewSerializer
+#     permission_classes = [IsAuthenticatedOrReadOnly]
+
+# class ReviewRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+#     queryset = Review.objects.all()
+#     serializer_class = ReviewSerializer
+#     permission_classes = [IsAuthenticatedOrReadOnly]
+
+
+@api_view(['POST'])
+# @permission_classes([IsAuthenticated])
+def get_all_reviews(req):
+    
+    serializer = ReviewSerializer(Review.objects.all(), many=True)
+    return Response(serializer.data)
+
+    
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_review(req):
+    serializer = ReviewSerializer(data=req.data, context={"user":req.user})
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    else:
+        print('**************review*******************')
+        print('error', serializer.errors)
+        print('***************review******************')
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+    #  all_products = ProductSerializer(Product.objects.all(), many=True).data
+    #     return JsonResponse(all_products, safe=False)

@@ -17,5 +17,11 @@ urlpatterns = [
     path('get_profile', views.get_user_profile),
     path('upd_profile', views.update_user_profile),
     path('orders', views.get_orders, name='get_orders'),
+    path('reviews', views.get_all_reviews, name='get_reviews'),
+    path('createreview', views.create_review, name='create_review'),
 
+#     path('reviews/', views.ReviewListCreateAPIView.as_view(),
+     #     name='review_list_create'),
+#     path('reviews/<int:pk>/', views.ReviewRetrieveUpdateDestroyAPIView.as_view(),
+     #     name='review_retrieve_update_destroy'),
 ]
