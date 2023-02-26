@@ -12,6 +12,16 @@ import { SERVER } from "../../globalVar";
   }
 
 
+  export function sendNewReview(creds:any) {
+    return new Promise<{ data: any }>((resolve) =>
+    axios
+        .post(SERVER + "createreview",creds,{headers:{'Authorization': `Bearer ${localStorage.getItem('axx')}`
+      } })
+        .then((res) => resolve({ data: res.data }))
+    );
+  }
+
+
 
 
 

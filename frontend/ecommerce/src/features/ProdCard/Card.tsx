@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../app/hooks';
 import { SERVER } from '../../globalVar';
@@ -8,35 +8,34 @@ import { removeProdAsync } from '../adminTools/productSlice';
 import { addToCart } from '../cart/cartSlice';
 import { selectUser } from '../login/loginSlice';
 import { selectProdctsOrderd } from '../MyOrders/myOrdersSlice';
-import { getReviewsAsync, selectAllReviews } from '../review/reviewSlice';
+import { getReviewsAsync, selectAllReviews, sendReview } from '../review/reviewSlice';
 import "./card.css"
+
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
+import { Rating, Typography } from '@mui/material';
+
 const Card = (props: any) => {
 
     const dispatch = useAppDispatch()
     const currentUser: string = useSelector(selectUser)
     const productsOrderd: number[] = useSelector(selectProdctsOrderd)
     const all_reviews: any = useSelector(selectAllReviews)
+    const [Value, setValue] = useState(0)
     const handle_remove = async () => {
         await dispatch(removeProdAsync(props.prod.id))
         props.update_products()
     }
-    const handleReview = async () => {
+    const handleReview = (rate: any) => {
         // dispatch(getReviewsAsync())
+        console.log(rate)
+        dispatch(sendReview({
+            "product": props.prod.id, "rating": rate, "title": "yoni review",
+            "text": "bla bla bla"
+        }))
     }
-    const handleReview2 = async () => {
-        console.log('print',all_reviews[props.prod.id].avgRating)
-        // dispatch(get_specific_product_review_status(props.prod.id))
-    }
-
-    // const rating = []
-    // let tmpRating = 0
-    // if (all_reviews[props.prod.id].avgRating !== undefined) { tmpRating = all_reviews[props.prod.id].avgRating } else {tmpRating=0}
-    // for (let i = 1; i <= 5; i++) {
-        // console.log(i);
-        // if (i > tmpRating) { rating.push(1) } else { rating.push(0) }
-
-    // }
-    // console.log(all_reviews[props.prod.id].avgRating)
+    const tmp = Array.isArray(all_reviews) ? all_reviews.find((review: { product: any; }) => review.product === props.prod.id) : undefined;
+    const tmprate = tmp ? tmp.avgRating : 0
 
 
     return (
@@ -44,8 +43,19 @@ const Card = (props: any) => {
             <div className='img_container'>
                 <img src={`${SERVER}static${props.img}`} alt="Bootstrap" width="120px" height="120px" />
                 <div onClick={() => dispatch(addToCart(props.prod))} className='add2cart_btn '>+ Add</div>
-                {productsOrderd.includes(props.prod.id) && <div onClick={handleReview} className='add2cart_btn' style={{ background: 'green' }} >Review</div>}
-                <div onClick={handleReview2} className='add2cart_btn' style={{ background: 'green' }} >Review</div>
+                {productsOrderd.includes(props.prod.id) &&
+                    <Popup trigger={<div className='add2cart_btn' style={{ background: 'green' }}> Review</div>} position="right center">
+                        <div><Typography component="legend">Controlled</Typography>
+                            <Rating
+                                name="simple-controlled"
+                                value={Value}
+                                onChange={(event, newValue: any) => {
+                                    setValue(newValue);
+                                }}
+                            />
+                            <div onClick={() => handleReview(Value)}>send review</div>
+                        </div>
+                    </Popup>}
                 <div style={currentUser == 'admin' ? { backgroundColor: "red" } : { display: "none" }} onClick={handle_remove} className='add2cart_btn '>rmv prod</div>
             </div>
             <div className='details_container'>
@@ -54,11 +64,9 @@ const Card = (props: any) => {
                     {props.name}<br />
                     {props.desc}<br />
                     <br />
+                    <Typography component="legend"></Typography>
+                    <Rating name="read-only" value={tmprate} readOnly />
 
-
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-star-fill" viewBox="0 0 16 16">
-                        <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                    </svg>
 
 
                 </strong>

@@ -1,15 +1,16 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { stat } from 'fs';
 import { type } from 'os';
 import { RootState, AppThunk } from '../../app/store';
 import MyOrders, { Order } from "../../models/myOrders"
 import Product from '../../models/Product';
 import Review from '../../models/Review';
-import { getReviews } from './reviewAPI';
+import { getReviews, sendNewReview } from './reviewAPI';
 
 //  THIS STATE HOLDS ALL THE ORDERS THE USER MADE
 
 const initialState: Review = {
-  all_reviews:{}
+  all_reviews: {}
 };
 
 export const getReviewsAsync = createAsyncThunk(
@@ -21,6 +22,14 @@ export const getReviewsAsync = createAsyncThunk(
   }
 );
 
+export const sendReview = createAsyncThunk(
+  'Reviews/Reviews',
+  async (creds:any) => {
+    console.log('inasync')
+    const response = await sendNewReview(creds);
+    return response.data;
+  }
+);
 export const reviewSlice = createSlice({
   name: 'review',
   initialState,
