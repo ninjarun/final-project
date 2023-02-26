@@ -8,6 +8,7 @@ import { SERVER } from '../../globalVar';
 import Product from '../../models/Product';
 import { getAllProductsAsync, selectProducts } from './manyProductsSlice';
 import { selectProdctsOrderd } from '../MyOrders/myOrdersSlice';
+import { getReviewsAsync } from '../review/reviewSlice';
 
 const Home = () => {
   const dispatch = useAppDispatch()
@@ -16,6 +17,8 @@ const Home = () => {
 
   useEffect(() => {
     dispatch(getAllProductsAsync())
+    dispatch(getReviewsAsync())
+
   }, []);
 
 

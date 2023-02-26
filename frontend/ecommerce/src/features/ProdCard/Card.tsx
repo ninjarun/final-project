@@ -15,18 +15,28 @@ const Card = (props: any) => {
     const dispatch = useAppDispatch()
     const currentUser: string = useSelector(selectUser)
     const productsOrderd: number[] = useSelector(selectProdctsOrderd)
-    const all_reviews:any=useSelector(selectAllReviews)
+    const all_reviews: any = useSelector(selectAllReviews)
     const handle_remove = async () => {
         await dispatch(removeProdAsync(props.prod.id))
         props.update_products()
     }
     const handleReview = async () => {
-        dispatch(getReviewsAsync())
+        // dispatch(getReviewsAsync())
     }
     const handleReview2 = async () => {
-        console.log(all_reviews[props.prod.id])
+        console.log('print',all_reviews[props.prod.id].avgRating)
         // dispatch(get_specific_product_review_status(props.prod.id))
     }
+
+    // const rating = []
+    // let tmpRating = 0
+    // if (all_reviews[props.prod.id].avgRating !== undefined) { tmpRating = all_reviews[props.prod.id].avgRating } else {tmpRating=0}
+    // for (let i = 1; i <= 5; i++) {
+        // console.log(i);
+        // if (i > tmpRating) { rating.push(1) } else { rating.push(0) }
+
+    // }
+    // console.log(all_reviews[props.prod.id].avgRating)
 
 
     return (
@@ -35,7 +45,7 @@ const Card = (props: any) => {
                 <img src={`${SERVER}static${props.img}`} alt="Bootstrap" width="120px" height="120px" />
                 <div onClick={() => dispatch(addToCart(props.prod))} className='add2cart_btn '>+ Add</div>
                 {productsOrderd.includes(props.prod.id) && <div onClick={handleReview} className='add2cart_btn' style={{ background: 'green' }} >Review</div>}
-                {productsOrderd.includes(props.prod.id) && <div onClick={handleReview2} className='add2cart_btn' style={{ background: 'yellow' }} >Review</div>}
+                <div onClick={handleReview2} className='add2cart_btn' style={{ background: 'green' }} >Review</div>
                 <div style={currentUser == 'admin' ? { backgroundColor: "red" } : { display: "none" }} onClick={handle_remove} className='add2cart_btn '>rmv prod</div>
             </div>
             <div className='details_container'>
@@ -43,6 +53,14 @@ const Card = (props: any) => {
                     {props.price}<br />
                     {props.name}<br />
                     {props.desc}<br />
+                    <br />
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-star-fill" viewBox="0 0 16 16">
+                        <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                    </svg>
+
+
                 </strong>
             </div>
             <div className='icon'>
