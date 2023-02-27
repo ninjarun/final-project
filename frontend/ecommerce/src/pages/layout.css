@@ -23,6 +23,7 @@
 .dropDownBtn {
     position: relative;
     display: inline-block;
+    
 }
 
 
@@ -33,13 +34,14 @@
 
 .dropContent {
     display: none;
-    background-color: #031f42;
     position: fixed;
     text-align: center;
     padding: 25px;
     margin: auto;
     margin-top: 10px;
     z-index: 1;
+    background-color: #0071dc;
+    border-radius: 15px;
 
 }
 

@@ -10,7 +10,7 @@
     box-shadow: 1px 1px #CCCCCC;
   }
   
-  .dropContent {
+  .dropContent_search {
     background-color: #FFFFFF;
     border-radius: 25px;
     position: absolute;
@@ -22,7 +22,7 @@
     box-shadow: 1px 1px #CCCCCC;
   }
   
-  .dropContent > div {
+  .dropContent_search > div {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -31,27 +31,27 @@
     border-bottom: 1px solid #CCCCCC;
   }
   
-  .dropContent > div:hover {
+  .dropContent_search > div:hover {
     background-color: #F5F5F5;
   }
   
-  .dropContent > div img {
+  .dropContent_search > div img {
     margin-right: 10px;
   }
   
-  .dropContent > div > div:first-child {
+  .dropContent_search > div > div:first-child {
     font-size: 20px;
     font-weight: bold;
     color: #000000;
   }
   
-  .dropContent > div > div:last-child {
+  .dropContent_search > div > div:last-child {
     font-size: 20px;
     font-weight: bold;
     color: #0071dc;
   }
   
-  .dropContent > div > div:last-child:hover {
+  .dropContent_search > div > div:last-child:hover {
     color: #FFFFFF;
     background-color: #0071dc;
   }

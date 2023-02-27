@@ -1,38 +1,108 @@
 .main {
     display: flex;
+    flex-direction: row;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin: 10px;
+    min-height: 270px;
+  } 
+  
+  .img_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     padding: 5px;
-    margin: 5px;
-    position: relative;
-    box-shadow: 2px 2px #0071dc;
-}
-
-.icon {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    cursor: pointer;
-}
-
-
-
-.details_container {
+  }
+  
+  .details_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     padding: 5px;
-    margin: auto;
-    text-align: center;
-}
-
-.add2cart_btn {
-    background-color: #0071dc;
-    padding: 3px;
-    margin: 3px;
-    color: white;
-    border-radius: 25px;
-    font-weight: bolder;
-    text-align: center;
+  }
+  
+  .icon {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+  }
+  
+  .add2cart_btn {
+    margin-top: 10px;
+    padding: 8px;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
     cursor: pointer;
-    box-shadow: 1px 1px #0071dc;
-}
-
-.main:hover{
-    box-shadow: 2px 2px #4cadfe;
-}
+    text-align: center;
+    width: 120px;
+  }
+  
+  .add2cart_btn:hover {
+    background-color: #0069d9;
+  }
+  
+  .add2cart_btn:active {
+    background-color: #005ecb;
+  }
+  
+  .add2cart_btn:disabled {
+    background-color: #c1c1c1;
+    cursor: not-allowed;
+  }
+  
+  .review_btn {
+    margin-top: 10px;
+    padding: 8px;
+    border-radius: 5px;
+    background-color: #28a745;
+    color: #fff;
+    cursor: pointer;
+    text-align: center;
+    width: 120px;
+  }
+  
+  .review_btn:hover {
+    background-color: #218838;
+  }
+  
+  .review_btn:active {
+    background-color: #1e7e34;
+  }
+  
+  .review_btn:disabled {
+    background-color: #c1c1c1;
+    cursor: not-allowed;
+  }
+  
+  .img_container img {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .img_container img:hover {
+    transform: scale(1.1);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .details_container strong {
+    font-size: 18px;
+  }
+  
+  .icon svg {
+    width: 24px;
+    height: 24px;
+    fill: red;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .icon svg:hover {
+    transform: scale(1.2);
+    transition: transform 0.3s ease-in-out;
+  }
+  

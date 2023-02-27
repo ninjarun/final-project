@@ -18,18 +18,13 @@ const SearchBar = () => {
             <div>
 
                 <input list="mylist" className="searchBar" placeholder="search anything at StarStore" onChange={(e) => setSearch(e.target.value)} />
-                <div style={Search.length > 0 ? { display: "block" } : { display: 'none' }} className=" dropContent">
+                <div style={Search.length > 0 ? { display: "block" } : { display: 'none' }} className=" dropContent_search">
                     {prods.results && prods.results.map((x: any, i: number) =>
                         x.name.includes(Search) ? (
-                            <div style={{ paddingLeft: '25px',paddingRight:'25px', fontSize: '25px', display: 'flex', justifyContent: 'space-around' }} key={i}>
+                            <div key={i}>
                                 <img src={`${SERVER}static${x.image}`} alt="Bootstrap" width="80px" height="80px" />
-                                <div style={{marginRight:'50px'}}>{x.name} {x.price}&#8362;</div>
-                                <div onClick={() => dispatch(addToCart(x))} style={{
-                                    backgroundColor: '#0071dc', padding: '3px', margin: '0px', color: 'white', borderRadius: '25px', fontWeight: 'bolder',
-                                    textAlign: 'center',
-                                    cursor: 'pointer',
-                                    boxShadow: '1px 1px #0071dc', position:'absolute', right:'10px'
-                                }}>+ Add</div>
+                                <div  >{x.name} {x.price}&#8362;</div>
+                                <div onClick={() => dispatch(addToCart(x))} >+ Add</div>
                             </div>
                         ) : null
                     )}                </div>
