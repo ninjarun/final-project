@@ -28,7 +28,6 @@ const Card = (props: any) => {
     }
     const handleReview = (rate: any) => {
         // dispatch(getReviewsAsync())
-        console.log(rate)
         dispatch(sendReview({
             "product": props.prod.id, "rating": rate, "title": "yoni review",
             "text": "bla bla bla"

@@ -16,7 +16,6 @@ const initialState: Review = {
 export const getReviewsAsync = createAsyncThunk(
   'Reviews/Reviews',
   async () => {
-    console.log('inasync')
     const response = await getReviews();
     return response.data;
   }
@@ -25,7 +24,6 @@ export const getReviewsAsync = createAsyncThunk(
 export const sendReview = createAsyncThunk(
   'Reviews/Reviews',
   async (creds:any) => {
-    console.log('inasync')
     const response = await sendNewReview(creds);
     return response.data;
   }
@@ -78,7 +76,6 @@ const avgRatings = Object.values(productRatings).map((product:any) => ({
 }));
 
 // Output the final list of objects containing the average rating for each product
-console.log('checkkkkkkk',avgRatings);
 state.all_reviews=avgRatings
 
       // ************************************************

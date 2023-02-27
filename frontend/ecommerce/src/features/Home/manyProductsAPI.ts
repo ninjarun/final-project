@@ -17,3 +17,10 @@ export function addProdFetch(creds:any) {
         .then((res) => resolve({ data: res.data }))
     );
   }
+
+  export function getNextProds(creds:string) {
+    return new Promise<{ data: any }>((resolve) =>
+    axios.get(creds)
+        .then((res) => resolve({ data: res.data }))
+    );
+  }

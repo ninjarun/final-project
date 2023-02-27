@@ -16,6 +16,7 @@ from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework import status, generics
 
+from rest_framework.pagination import PageNumberPagination
 
 
 # =============================================
@@ -115,13 +116,18 @@ def update_user_profile(request):
     return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
 
 
-# with serializer - gets all products
+
 @api_view(['GET', 'POST', 'DELETE', 'PUT', 'PATCH'])
-# @permission_classes([IsAuthenticated])
 def myProducts(req):
     if req.method == 'GET':
-        all_products = ProductSerializer(Product.objects.all(), many=True).data
-        return JsonResponse(all_products, safe=False)
+        paginator = PageNumberPagination()
+        paginator.page_size = 10  # set the number of items per page
+
+        all_products = Product.objects.all()
+        result_page = paginator.paginate_queryset(all_products, req)
+
+        serializer = ProductSerializer(result_page, many=True)
+        return paginator.get_paginated_response(serializer.data)
     if req.method == 'POST':
         Product.objects.create(
             name=req.data["name"], description=req.data["description"], price=req.data["price"])
@@ -135,16 +141,22 @@ def myProducts(req):
 # return all images to client (without serialize)
 @api_view(['GET'])
 def getImages(request):
-    res = []  # create an empty list
-    for img in Product.objects.all():  # run on every row in the table...
+    paginator = PageNumberPagination()
+    paginator.page_size = 5  # set the number of items per page
+
+    images = Product.objects.all()
+    result_page = paginator.paginate_queryset(images, request)
+    
+    res = []
+    for img in result_page:
         res.append({
             "name": img.name,
             "description": img.description,
             "price": img.price,
             "image": str(img.image)
-        })  # append row by to row to res list
-    return Response(res)  # return array as json response
-
+        })
+    
+    return paginator.get_paginated_response(res)
 
 # upload image method (with serialize)
 class APIViews(APIView):

@@ -8,12 +8,18 @@ import { getAllProductsAsync } from "../features/Home/manyProductsSlice";
 import { load_user, logoutAsync, refreshAsync, selectUser } from "../features/login/loginSlice";
 import "./layout.css"
 import jwt_decode from "jwt-decode"
+import { getReviewsAsync } from "../features/review/reviewSlice";
 
 const Layout = () => {
 
     const currentUser: string = useSelector(selectUser)
     const dispatch = useAppDispatch()
 
+    
+    // useEffect(() => {
+    //     dispatch(getAllProductsAsync())
+    //     dispatch(getReviewsAsync())
+    // }, [])
 
     //  refreshes users tokens - 
     useEffect(() => {
@@ -37,7 +43,6 @@ const Layout = () => {
             }
         }
             }, [])
-
 
 
     return (

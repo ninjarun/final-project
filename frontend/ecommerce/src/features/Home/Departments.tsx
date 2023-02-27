@@ -21,7 +21,7 @@ const Departments = () => {
        
        
        <div style={{justifyContent:'center', display: "flex", flexWrap: 'wrap' }}>
-       {prods.map((p: Product, i) => {
+       {prods.map((p: Product, i:any) => {
     if (p.category === selectedCat) {
         return (
             <div style={{ flex: "0 0 33%", minWidth: "300px", maxWidth: "350px" }} key={i}>
