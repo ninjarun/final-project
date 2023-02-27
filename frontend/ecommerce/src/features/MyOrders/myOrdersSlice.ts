@@ -14,7 +14,6 @@ const initialState: MyOrders = {
 export const userOrdersAsync = createAsyncThunk(
   'myorder/usersOrders',
   async () => {
-    console.log('inasync')
     const response = await getOrders();
     return response.data;
   }

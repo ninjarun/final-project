@@ -1,9 +1,9 @@
 .navigator {
     display: flex;
     justify-content: space-around;
-    background-color: #0071dc;
-    padding-top: 10px;
     padding-bottom: 10px;
+    padding-top: 10px;
+    background-color: #0071dc;
 }
 
 .navBarLink {
@@ -47,9 +47,4 @@
     font-weight: bolder;
     font-size: larger;
     text-decoration: underline;
-}
-
-.searchBar {
-    border-radius: 10px;
-
 }

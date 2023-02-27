@@ -115,20 +115,26 @@ def update_user_profile(request):
         return Response(status=status.HTTP_200_OK, data=serializer.data)
     return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
 
-
-
-@api_view(['GET', 'POST', 'DELETE', 'PUT', 'PATCH'])
+@api_view(['GET'])
 def myProducts(req):
     if req.method == 'GET':
-        paginator = PageNumberPagination()
-        paginator.page_size = 10  # set the number of items per page
-
         all_products = Product.objects.all()
-        result_page = paginator.paginate_queryset(all_products, req)
+        if 'all' in req.query_params and req.query_params['all'] == 'true':
+            serializer = ProductSerializer(all_products, many=True)
+            return Response({'results': serializer.data})  # wrap the serialized data in a dictionary
+        else:
+            paginator = PageNumberPagination()
+            paginator.page_size = 10  # set the number of items per page
+            result_page = paginator.paginate_queryset(all_products, req)
+            serializer = ProductSerializer(result_page, many=True)
+            paginated_data = serializer.data
+            return Response({
+                'count': paginator.page.paginator.count,
+                'next': paginator.get_next_link(),
+                'previous': paginator.get_previous_link(),
+                'results': paginated_data
+            })  # wrap the paginated data in a dictionary with additional metadata
 
-        serializer = ProductSerializer(result_page, many=True)
-        return paginator.get_paginated_response(serializer.data)
-    
     if req.method == 'POST':
         Product.objects.create(
             name=req.data["name"], description=req.data["description"], price=req.data["price"])

@@ -10,13 +10,14 @@ import "./layout.css"
 import jwt_decode from "jwt-decode"
 import { getReviewsAsync } from "../features/review/reviewSlice";
 import { userOrdersAsync } from "../features/MyOrders/myOrdersSlice";
+import SearchBar from "./SearchBar";
 
 const Layout = () => {
 
     const currentUser: string = useSelector(selectUser)
     const dispatch = useAppDispatch()
 
-    
+
     useEffect(() => {
         dispatch(getAllProductsAsync())
         dispatch(getReviewsAsync())
@@ -32,19 +33,17 @@ const Layout = () => {
             const decodedToken: any = jwt_decode(token);
             const now = Math.floor(Date.now() / 1000);
             const expiresIn = decodedToken.exp - now;
-        
+
             // check if token is about to expire within next 60 minutes
             if (expiresIn <= 3600 && expiresIn > 0) { // check if token is about to expire or has already expired
-                console.log('test');
                 dispatch(refreshAsync(refresh));
             } else if (expiresIn <= 0) { // check if token has already expired
-                console.log('token expired');
                 dispatch(logoutAsync(token)); // dispatch a logout action to clear the expired token and log the user out
             } else {
                 dispatch(load_user(decodedToken));
             }
         }
-            }, [])
+    }, [])
 
 
     return (
@@ -64,7 +63,7 @@ const Layout = () => {
                             <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zM2.5 2a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zM1 10.5A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3z" />
                         </svg>
                         Departments</Link>
-                    <input className="searchBar" placeholder="search anything at StarStore" />
+                    <SearchBar />
                     <div className=" dropDownBtn navBarLink">
                         <Link className="navBarLink" to="/login">
                             <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" className="bi bi-person-circle" viewBox="0 0 16 16">

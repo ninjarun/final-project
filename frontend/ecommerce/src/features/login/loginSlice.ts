@@ -23,7 +23,6 @@ export const loginAsync = createAsyncThunk(
   'login/userFetch',
   async (creds: any) => {
     const response = await userFetch(creds);
-    console.log('here', response.data)
     return response.data;
 
   }
@@ -32,7 +31,6 @@ export const loginAsync = createAsyncThunk(
 export const registerAsync = createAsyncThunk(
   'register/regUser',
   async (creds: any) => {
-    console.log(creds)
     const response = await userRegister(creds);
     return response.data;
   }
@@ -41,7 +39,6 @@ export const registerAsync = createAsyncThunk(
 export const refreshAsync = createAsyncThunk(
   'refresh/irefresh',
   async (refresh: any) => {
-    console.log("here!", refresh)
     const response = await refreshUser(refresh);
     return response.data;
   }
@@ -51,7 +48,6 @@ export const refreshAsync = createAsyncThunk(
 export const logoutAsync = createAsyncThunk(
   'logout/logout',
   async (token: any) => {
-    console.log("here!")
     const response = await refreshUser(token);
     return response.data;
   }
@@ -63,7 +59,6 @@ export const loginSlice = createSlice({
   reducers: {
     load_user: (state, action) => {
       // used to load the user if access token still has more than an hour till it will expire
-      console.log(action.payload)
       state.userLogged = action.payload.username
       { action.payload.username == "admin" ? state.isAdmin = true : state.isAdmin = false }
 
@@ -108,11 +103,9 @@ export const loginSlice = createSlice({
 
 
       .addCase(refreshAsync.fulfilled, (state, action) => {
-        console.log(action.payload)
         localStorage.setItem('refresh', action.payload.refresh)
         localStorage.setItem('axx', action.payload.access)
         const tmp: any = jwt_decode(action.payload.access)
-        console.log(tmp)
         state.userLogged = tmp.username
         // state.userID = tmp.user_id
 
@@ -120,7 +113,6 @@ export const loginSlice = createSlice({
       })
 
       .addCase(logoutAsync.fulfilled, (state, action) => {
-        console.log(action.payload)
         const tmp: any = jwt_decode(action.payload.access)
         state.userLogged = ""
         { tmp.username == "admin" ? state.isAdmin = true : state.isAdmin = false }

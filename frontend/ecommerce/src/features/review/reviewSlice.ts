@@ -57,7 +57,6 @@ export const reviewSlice = createSlice({
     builder
       .addCase(getReviewsAsync.fulfilled, (state, action) => {
         //                   creates an object with all product ratings
-console.log(action.payload)
         // Use reduce to calculate the sum and count of ratings for each product
         const tmpAr = [...action.payload]
         const productRatings = tmpAr.reduce((acc: any, curr: any) => {

@@ -14,7 +14,7 @@ const initialState: Products = {
 
 export const getAllProductsAsync = createAsyncThunk(
   'products/getAllProducts',
-  async (allProducts:boolean = false) => {
+  async (allProducts: boolean = false) => {
     const response = await getAllProducts(allProducts);
     return response.data;
   }
@@ -23,7 +23,7 @@ export const getAllProductsAsync = createAsyncThunk(
 
 export const getMoreProdsAsync = createAsyncThunk(
   'products/getmoreproducts',
-  async (creds:string) => {
+  async (creds: string) => {
     const response = await getNextProds(creds);
     return response.data;
   }
@@ -44,18 +44,14 @@ export const productsSlice = createSlice({
     builder
 
       .addCase(getAllProductsAsync.fulfilled, (state, action) => {
-        console.log('getall',action.payload)
-          state.products = action.payload
-          state.products.results.forEach((e:Product)=>
-         { !state.categories.includes(e.category) &&  state.categories.push(e.category)}
-          )
-          console.log('mycategories',state.categories)
-        })
-        .addCase(getMoreProdsAsync.fulfilled, (state, action) => {
-          console.log('getmore',action.payload)
-          state.products=action.payload
-          })
-      },
+        state.products = action.payload
+        state.products.results.forEach((e: Product) => { !state.categories.includes(e.category) && state.categories.push(e.category) }
+        )
+      })
+      .addCase(getMoreProdsAsync.fulfilled, (state, action) => {
+        state.products = action.payload
+      })
+  },
 });
 
 export const { } = productsSlice.actions;

@@ -6,25 +6,21 @@ import Product from '../../models/Product';
 import { useAppDispatch } from '../../app/hooks';
 
 const Departments = () => {
-    const prods = useSelector(selectProducts)
-    const cats = useSelector(selectCategories)
+    
     const dispatch = useAppDispatch()
-
-    const [selectedCat, setselectedCat] = useState("")
-
     useEffect(() => {
     dispatch(getAllProductsAsync(true))
-
-    console.log('department',prods)
-
     }, [])
     
+    const prods = useSelector(selectProducts)
+    const cats = useSelector(selectCategories)
+    const [selectedCat, setselectedCat] = useState("")
     return (
         <div>
-            <div>
-                {cats.map((cat: string, i) => (<div key={i}>
+            <div style={{display:'flex',justifyContent:'center'}}>
+                {cats.map((cat: string, i) => (<div style={{margin:'5px',backgroundColor:'#4cadfe',borderRadius:'25px',padding:'7px',cursor:'pointer'}} key={i}>
                     <div onClick={() => setselectedCat(cat)}>
-                        {cat}
+                      <strong>  {cat}</strong>
                     </div>
                 </div>))}
             </div>
