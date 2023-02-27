@@ -128,10 +128,12 @@ def myProducts(req):
 
         serializer = ProductSerializer(result_page, many=True)
         return paginator.get_paginated_response(serializer.data)
+    
     if req.method == 'POST':
         Product.objects.create(
             name=req.data["name"], description=req.data["description"], price=req.data["price"])
         return Response("post...")
+    
     if req.method == 'DELETE':
         Product.objects.delete(id=req.data["id"])
         return Response("delted")
@@ -139,6 +141,9 @@ def myProducts(req):
 
 # //////////// image upload / display
 # return all images to client (without serialize)
+
+
+# needs to be checked i think not being used!!!!
 @api_view(['GET'])
 def getImages(request):
     paginator = PageNumberPagination()

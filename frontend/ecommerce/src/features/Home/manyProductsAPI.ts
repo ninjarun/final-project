@@ -11,12 +11,19 @@ export function addProdFetch(creds:any) {
     );
   }
   
-  export function getAllProducts() {
+  // export function getAllProducts() {
+  //   return new Promise<{ data: any }>((resolve) =>
+  //   axios.get(SERVER + "myProducts")
+  //       .then((res) => resolve({ data: res.data }))
+  //   );
+  // }
+  export function getAllProducts(allProducts = false) {
+    const url = allProducts ? `${SERVER}myProducts?all=true` : `${SERVER}myProducts`;
     return new Promise<{ data: any }>((resolve) =>
-    axios.get(SERVER + "myProducts")
-        .then((res) => resolve({ data: res.data }))
+      axios.get(url).then((res) => resolve({ data: res.data }))
     );
   }
+  
 
   export function getNextProds(creds:string) {
     return new Promise<{ data: any }>((resolve) =>

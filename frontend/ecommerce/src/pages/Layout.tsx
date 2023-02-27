@@ -9,6 +9,7 @@ import { load_user, logoutAsync, refreshAsync, selectUser } from "../features/lo
 import "./layout.css"
 import jwt_decode from "jwt-decode"
 import { getReviewsAsync } from "../features/review/reviewSlice";
+import { userOrdersAsync } from "../features/MyOrders/myOrdersSlice";
 
 const Layout = () => {
 
@@ -16,10 +17,11 @@ const Layout = () => {
     const dispatch = useAppDispatch()
 
     
-    // useEffect(() => {
-    //     dispatch(getAllProductsAsync())
-    //     dispatch(getReviewsAsync())
-    // }, [])
+    useEffect(() => {
+        dispatch(getAllProductsAsync())
+        dispatch(getReviewsAsync())
+        dispatch(userOrdersAsync())
+    }, [])
 
     //  refreshes users tokens - 
     useEffect(() => {

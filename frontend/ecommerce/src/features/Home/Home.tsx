@@ -16,11 +16,11 @@ const Home = () => {
   const dispatch = useAppDispatch()
   const prods = useSelector(selectProducts)
 
-  useEffect(() => {
-    dispatch(getAllProductsAsync())
-    dispatch(getReviewsAsync())
+  // useEffect(() => {
+  //   dispatch(getAllProductsAsync())
+  //   dispatch(getReviewsAsync())
 
-  }, []);
+  // }, []);
 
   console.log(prods)
   return (
@@ -33,9 +33,12 @@ const Home = () => {
         ))}
         <br />
 
+      </div><br />
+      <div style={{ justifyContent: "space-around", display: 'flex' }}>
+        {prods.previous && <div style={{ cursor: "pointer", borderRadius: "25px", backgroundColor: "red", padding: "10px", margin: "10px" }} onClick={() => dispatch(getMoreProdsAsync(prods.previous))}><strong>previous page</strong></div>}
+        <div style={{ cursor: "pointer", borderRadius: "25px", backgroundColor: "red", padding: "10px", margin: "10px" }} onClick={() => dispatch(getMoreProdsAsync(prods.next))}>          <strong>          next page          </strong>                      </div>
       </div>
-      <div onClick={() => dispatch(getMoreProdsAsync(prods.next))}>next page</div>
-      <div onClick={() => dispatch(getMoreProdsAsync(prods.previous))}>previous page</div>
+
     </div>
   )
 }

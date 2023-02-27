@@ -6,12 +6,7 @@ import Product from '../../models/Product'
 import { selectOrders, userOrdersAsync } from './myOrdersSlice'
 
 const MyOrders = () => {
-  const dispatch = useAppDispatch()
   const orders = useSelector(selectOrders)
-  console.log(orders)
-  useEffect(() => {
-    dispatch(userOrdersAsync())
-  }, [])
 
   return (
     // <div>MyOrders</div>

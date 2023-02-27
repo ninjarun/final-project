@@ -22,8 +22,8 @@ export const getReviewsAsync = createAsyncThunk(
 );
 
 export const sendReview = createAsyncThunk(
-  'Reviews/Reviews',
-  async (creds:any) => {
+  'Reviews/sendreview',
+  async (creds: any) => {
     const response = await sendNewReview(creds);
     return response.data;
   }
@@ -56,38 +56,34 @@ export const reviewSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getReviewsAsync.fulfilled, (state, action) => {
-//                   creates an object with all product reatings
-      // **********************************************
-      
-// Use reduce to calculate the sum and count of ratings for each product
-const tmpAr=[...action.payload]
-const productRatings = tmpAr.reduce((acc:any, curr:any) => {
-  const { product, rating } = curr;
-  acc[product] = acc[product] || { product, ratingSum: 0, ratingCount: 0 };
-  acc[product].ratingSum += rating;
-  acc[product].ratingCount++;
-  return acc;
-}, {});
+        //                   creates an object with all product ratings
+console.log(action.payload)
+        // Use reduce to calculate the sum and count of ratings for each product
+        const tmpAr = [...action.payload]
+        const productRatings = tmpAr.reduce((acc: any, curr: any) => {
+          const { product, rating } = curr;
+          acc[product] = acc[product] || { product, ratingSum: 0, ratingCount: 0 };
+          acc[product].ratingSum += rating;
+          acc[product].ratingCount++;
+          return acc;
+        }, {});
 
-// Use map to calculate the average rating for each product
-const avgRatings = Object.values(productRatings).map((product:any) => ({
-  product: product.product,
-  avgRating: product.ratingSum / product.ratingCount,
-}));
+        // Use map to calculate the average rating for each product
+        const avgRatings = Object.values(productRatings).map((product: any) => ({
+          product: product.product,
+          avgRating: product.ratingSum / product.ratingCount,
+        }));
 
-// Output the final list of objects containing the average rating for each product
-state.all_reviews=avgRatings
+        // Output the final list of objects containing the average rating for each product
+        state.all_reviews = avgRatings
 
-      // ************************************************
 
       })
 
   },
 });
 
-export const {  } = reviewSlice.actions;
-// export const selectProducts = (state: RootState) => state.productz.products;
-// export const selectOrders = (state: RootState) => state.myOrders.orders;
+export const { } = reviewSlice.actions;
 export const selectAllReviews = (state: RootState) => state.review.all_reviews;
 
 export default reviewSlice.reducer;

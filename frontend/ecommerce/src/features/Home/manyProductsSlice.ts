@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { stat } from 'fs';
 import { RootState, AppThunk } from '../../app/store';
 import Products from "../../models/manyProducts"
+import Product from '../../models/Product';
 import { getAllProducts, getNextProds } from './manyProductsAPI';
 
 //  THIS STATE HOLDS ALL PRODUCTS AND THEIR CATEGORIES 
@@ -11,13 +12,10 @@ const initialState: Products = {
   categories: []
 };
 
-
-
 export const getAllProductsAsync = createAsyncThunk(
   'products/getAllProducts',
-  async () => {
-    console.log('inasync')
-    const response = await getAllProducts();
+  async (allProducts:boolean = false) => {
+    const response = await getAllProducts(allProducts);
     return response.data;
   }
 );
@@ -26,8 +24,6 @@ export const getAllProductsAsync = createAsyncThunk(
 export const getMoreProdsAsync = createAsyncThunk(
   'products/getmoreproducts',
   async (creds:string) => {
-    console.log(creds)
-    console.log('first')
     const response = await getNextProds(creds);
     return response.data;
   }
@@ -48,13 +44,12 @@ export const productsSlice = createSlice({
     builder
 
       .addCase(getAllProductsAsync.fulfilled, (state, action) => {
-        console.log(action.payload)
+        console.log('getall',action.payload)
           state.products = action.payload
-          // state.products.forEach((e)=>
-        //  { !state.categories.includes(e.category) &&  state.categories.push(e.category)}
-          // )
-          // console.log('mycategories',state.categories)
-          console.log('cheking',state.products)
+          state.products.results.forEach((e:Product)=>
+         { !state.categories.includes(e.category) &&  state.categories.push(e.category)}
+          )
+          console.log('mycategories',state.categories)
         })
         .addCase(getMoreProdsAsync.fulfilled, (state, action) => {
           console.log('getmore',action.payload)
